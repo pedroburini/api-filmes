@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FilmRate</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #d0d0d0;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    header h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: #555;
+      margin-top: 2px;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1rem 1.5rem;
+      gap: 8px;
+    }
+
+    .search-container input {
+      width: 100%;
+      max-width: 480px;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #2a2a2a;
+      background: #151515;
+      color: #e0e0e0;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-container input::placeholder { color: #444; }
+
+    .search-container input:focus {
+      border-color: #555;
+    }
+
+    .search-container button {
+      padding: 0.75rem 1.25rem;
+      background: #252525;
+      color: #ccc;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .search-container button:hover {
+      background: #2e2e2e;
+      color: #f0f0f0;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #131313;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .result-item:hover {
+      background: #181818;
+      border-color: #333;
+    }
+
+    .result-item img {
+      width: 38px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #1e1e1e;
+    }
+
+    .result-info strong {
+      display: block;
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+
+    .result-info span {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #444;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .details-container {
+      max-width: 760px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+      display: none;
+    }
+
+    .details-card {
+      background: #111;
+      border-radius: 10px;
+      border: 1px solid #1e1e1e;
+      overflow: hidden;
+    }
+
+    .details-top {
+      display: flex;
+      gap: 1.75rem;
+      padding: 1.75rem;
+    }
+
+    .details-top img {
+      width: 150px;
+      min-width: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .details-info h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+
+    .meta {
+      font-size: 0.78rem;
+      color: #555;
+      margin-bottom: 0.9rem;
+    }
+
+    .synopsis {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .crew {
+      font-size: 0.8rem;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .crew strong {
+      color: #888;
+      font-weight: 500;
+    }
+
+    .section {
+      padding: 1.25rem 1.75rem;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .ratings-grid {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .rating-badge {
+      background: #0f0f0f;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .rating-badge .source {
+      font-size: 0.7rem;
+      color: #444;
+      margin-bottom: 5px;
+    }
+
+    .rating-badge .score {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ccc;
+    }
+
+    .rating-badge.average {
+      background: #1a1a1a;
+      border-color: #2a2a2a;
+    }
+
+    .rating-badge.average .source { color: #555; }
+    .rating-badge.average .score { color: #e0e0e0; }
+
+    .streaming-logos {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .streaming-logos img {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #1e1e1e;
+      opacity: 0.85;
+      transition: opacity 0.15s;
+    }
+
+    .streaming-logos img:hover { opacity: 1; }
+
+    .no-streaming {
+      font-size: 0.8rem;
+      color: #444;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0 1rem 1rem;
+      display: block;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover { color: #aaa; }
+
+    @media (max-width: 560px) {
+      .details-top { flex-direction: column; align-items: center; text-align: center; }
+      .details-top img { width: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>FilmRate</h1>
+    <p>Notas e streaming em um só lugar</p>
+  </header>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar filme ou série..." />
+    <button onclick="search()">Buscar</button>
+  </div>
+
+  <div class="loading" id="loading">Buscando...</div>
+  <div class="results-list" id="resultsList"></div>
+
+  <div class="details-container" id="detailsContainer">
+    <button class="back-btn" onclick="goBack()">← voltar</button>
+    <div class="details-card" id="detailsCard"></div>
+  </div>
+
+  <script>
+    const API = 'https://api-filmes-production-5797.up.railway.app/api';
+
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') search();
+    });
+
+    async function search() {
+      const q = document.getElementById('searchInput').value.trim();
+      if (!q) return;
+      document.getElementById('resultsList').innerHTML = '';
+      document.getElementById('detailsContainer').style.display = 'none';
+      document.getElementById('loading').style.display = 'block';
+      try {
+        const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        document.getElementById('loading').style.display = 'none';
+        renderResults(data);
+      } catch {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('resultsList').innerHTML = '<p style="color:#444;text-align:center;font-size:0.85rem">Erro ao buscar. Tente novamente.</p>';
+      }
+    }
+
+    function renderResults(results) {
+      const list = document.getElementById('resultsList');
+      list.innerHTML = '';
+      results.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <img src="${r.poster || 'https://via.placeholder.com/38x56?text=?'}" alt="${r.title}" />
+          <div class="result-info">
+            <strong>${r.title}</strong>
+            <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'}</span>
+          </div>
+        `;
+        item.onclick = () => loadDetails(r.tmdb_id, r.media_type);
+        list.appendChild(item);
+      });
+    }
+
+    async function loadDetails(id, type) {
+      document.getElementById('resultsList').innerHTML = '';
+      document.getElementById('detailsContainer').style.display = 'none';
+      document.getElementById('loading').style.display = 'block';
+      try {
+        const res = await fetch(`${API}/details/${type}/${id}`);
+        const d = await res.json();
+        document.getElementById('loading').style.display = 'none';
+        renderDetails(d);
+      } catch {
+        document.getElementById('loading').style.display = 'none';
+      }
+    }
+
+    function goBack() {
+      document.getElementById('detailsContainer').style.display = 'none';
+      document.getElementById('resultsList').innerHTML = '';
+    }
+
+    function renderDetails(d) {
+      const avg = d.average_rating ? `${d.average_rating}` : 'N/A';
+      const streaming = d.streaming && d.streaming.length > 0
+        ? d.streaming.map(s => `<img src="${s.logo_path}" title="${s.provider_name}" alt="${s.provider_name}" />`).join('')
+        : '<span class="no-streaming">Não disponível no Brasil</span>';
+
+      document.getElementById('detailsCard').innerHTML = `
+        <div class="details-top">
+          <img src="${d.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${d.title}" />
+          <div class="details-info">
+            <h2>${d.title} ${d.year ? `<span style="color:#444;font-weight:400;font-size:1rem">(${d.year})</span>` : ''}</h2>
+            <p class="meta">${[d.genres, d.runtime].filter(Boolean).join(' · ')}</p>
+            <p class="synopsis">${d.synopsis || 'Sinopse não disponível.'}</p>
+            <div class="crew">
+              ${d.director ? `<div><strong>Diretor</strong> ${d.director}</div>` : ''}
+              ${d.cast ? `<div><strong>Elenco</strong> ${d.cast}</div>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Avaliações</div>
+          <div class="ratings-grid">
+            <div class="rating-badge">
+              <div class="source">IMDb</div>
+              <div class="score">${d.imdb_rating || 'N/A'}</div>
+            </div>
+            <div class="rating-badge">
+              <div class="source">Rotten Tomatoes</div>
+              <div class="score">${d.rotten_tomatoes || 'N/A'}</div>
+            </div>
+            <div class="rating-badge">
+              <div class="source">Metacritic</div>
+              <div class="score">${d.metacritic || 'N/A'}</div>
+            </div>
+            <div class="rating-badge">
+              <div class="source">TMDB</div>
+              <div class="score">${d.tmdb_rating || 'N/A'}</div>
+            </div>
+            <div class="rating-badge average">
+              <div class="source">Média</div>
+              <div class="score">${avg}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Disponível no Brasil</div>
+          <div class="streaming-logos">${streaming}</div>
+        </div>
+      `;
+
+      document.getElementById('detailsContainer').style.display = 'block';
+      document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
