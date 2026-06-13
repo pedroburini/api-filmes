@@ -310,6 +310,35 @@
       .details-top img { width: 120px; }
       .filters { padding: 1rem; }
     }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #888;
+      border: 1px solid #444;
+      pointer-events: all;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover { background: #bbb; }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 4px;
+      background: #222;
+      border-radius: 2px;
+    }
   </style>
 </head>
 <body>
@@ -335,9 +364,14 @@
     <span class="filter-label">Gênero</span>
     <select id="filterGenre" onchange="resetAndLoad()"><option value="">Todos</option></select>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Ano</span>
-    <input type="number" id="filterYear" placeholder="2024" min="1900" max="2025" onchange="resetAndLoad()" />
+  <div class="filter-group" style="flex-direction:column;align-items:flex-start;gap:4px">
+    <span class="filter-label">Ano: <span id="yearDisplay">Todos</span></span>
+    <div style="position:relative;width:180px;height:24px">
+      <input type="range" id="yearMin" min="1950" max="2025" value="1950" step="1"
+        oninput="updateYearDisplay()" onchange="resetAndLoad()" />
+      <input type="range" id="yearMax" min="1950" max="2025" value="2025" step="1"
+        oninput="updateYearDisplay()" onchange="resetAndLoad()" />
+    </div>
   </div>
   <div class="filter-group">
     <span class="filter-label">Nota mín.</span>
@@ -414,10 +448,15 @@
   }
 
   function getFilters() {
+    const yearMin = parseInt(document.getElementById('yearMin').value);
+    const yearMax = parseInt(document.getElementById('yearMax').value);
+    const yearMinActive = yearMin > 1950;
+    const yearMaxActive = yearMax < 2025;
     return {
       media_type: document.getElementById('filterType').value,
       genre_id: document.getElementById('filterGenre').value,
-      year: document.getElementById('filterYear').value,
+      year_min: yearMinActive ? yearMin : '',
+      year_max: yearMaxActive ? yearMax : '',
       min_rating: document.getElementById('filterRating').value,
       sort_by: document.getElementById('filterSort').value,
     };
@@ -502,7 +541,9 @@
   function clearFilters() {
     document.getElementById('filterType').value = 'all';
     document.getElementById('filterGenre').value = '';
-    document.getElementById('filterYear').value = '';
+    document.getElementById('yearMin').value = '1950';
+    document.getElementById('yearMax').value = '2025';
+    document.getElementById('yearDisplay').textContent = 'Todos';
     document.getElementById('filterRating').value = '';
     document.getElementById('filterSort').value = 'popularity';
     resetAndLoad();
@@ -608,6 +649,19 @@
         <div class="streaming-logos">${streaming}</div>
       </div>
     `;
+  }
+
+  function updateYearDisplay() {
+    const min = parseInt(document.getElementById('yearMin').value);
+    const max = parseInt(document.getElementById('yearMax').value);
+    if (min > max) {
+      document.getElementById(event.target.id === 'yearMin' ? 'yearMin' : 'yearMax').value = 
+        event.target.id === 'yearMin' ? max : min;
+    }
+    const minVal = parseInt(document.getElementById('yearMin').value);
+    const maxVal = parseInt(document.getElementById('yearMax').value);
+    document.getElementById('yearDisplay').textContent = 
+      minVal === 1950 && maxVal === 2025 ? 'Todos' : `${minVal} – ${maxVal}`;
   }
 </script>
 </body>

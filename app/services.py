@@ -20,7 +20,7 @@ async def get_genres() -> dict:
         all_genres.update({g["id"]: g["name"] for g in tv.json().get("genres", [])})
         return all_genres
 
-async def get_popular(media_type: str, genre_id: int, year: int, min_rating: float, page: int) -> list[SearchResult]:
+async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: int, min_rating: float, page: int) -> list[SearchResult]:
     async with httpx.AsyncClient() as client:
         results = []
         types = ["movie", "tv"] if media_type == "all" else [media_type]
@@ -34,11 +34,10 @@ async def get_popular(media_type: str, genre_id: int, year: int, min_rating: flo
             }
             if genre_id:
                 params["with_genres"] = genre_id
-            if year:
-                if t == "movie":
-                    params["primary_release_year"] = year
-                else:
-                    params["first_air_date_year"] = year
+            if year_min:
+                params["primary_release_date.gte" if t == "movie" else "first_air_date.gte"] = f"{year_min}-01-01"
+            if year_max:
+                params["primary_release_date.lte" if t == "movie" else "first_air_date.lte"] = f"{year_max}-12-31"
             if min_rating:
                 params["vote_average.gte"] = min_rating
                 params["vote_count.gte"] = 100

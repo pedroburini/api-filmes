@@ -15,11 +15,12 @@ async def search(q: str = Query(..., min_length=1, description="Título do filme
 async def popular(
     media_type: str = Query("all", description="movie, tv ou all"),
     genre_id: int = Query(None, description="ID do gênero TMDB"),
-    year: int = Query(None, description="Ano de lançamento"),
+    year_min: int = Query(None, description="Ano mínimo"),
+    year_max: int = Query(None, description="Ano máximo"),
     min_rating: float = Query(None, description="Nota mínima TMDB (0-10)"),
     page: int = Query(1, description="Página")
 ):
-    results = await get_popular(media_type, genre_id, year, min_rating, page)
+    results = await get_popular(media_type, genre_id, year_min, year_max, min_rating, page)
     return results
 
 @router.get("/genres")
