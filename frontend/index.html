@@ -507,7 +507,7 @@
     </div>
     <div class="poster-grid" id="posterGrid"></div>
   </div>
-  <div class="sentinel" id="sentinel">
+  <div class="sentinel hidden" id="sentinel">
     <div class="dot"></div><div class="dot"></div><div class="dot"></div>
   </div>
 </div>
@@ -683,7 +683,7 @@
   function setupInfiniteScroll() {
     const sentinel = document.getElementById('sentinel');
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !isLoading && hasMore && currentPage > 1) loadPopular();
+      if (entries[0].isIntersecting && !isLoading && hasMore) loadPopular();
     }, { rootMargin: '200px' });
     observer.observe(sentinel);
   }
