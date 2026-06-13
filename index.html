@@ -646,8 +646,17 @@
       hasMore = data.length > 0;
       isLoading = false;
 
-      if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
-      else document.getElementById('sentinel').classList.remove('hidden');
+      if (!hasMore) {
+        document.getElementById('sentinel').classList.add('hidden');
+      } else {
+        document.getElementById('sentinel').classList.remove('hidden');
+        // Se a página não tem scroll suficiente, carrega mais automaticamente
+        const scrolledTo = window.scrollY + window.innerHeight;
+        const totalHeight = document.documentElement.scrollHeight;
+        if (scrolledTo >= totalHeight - 400) {
+          loadPopular();
+        }
+      }
 
     } catch {
       hasMore = false;
