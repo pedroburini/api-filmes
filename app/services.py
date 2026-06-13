@@ -20,17 +20,30 @@ async def get_genres() -> dict:
         all_genres.update({g["id"]: g["name"] for g in tv.json().get("genres", [])})
         return all_genres
 
-async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: int, min_rating: float, page: int) -> list[SearchResult]:
+async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: int, min_rating: float, sort_by: str, page: int) -> list[SearchResult]:
     async with httpx.AsyncClient() as client:
         results = []
         types = ["movie", "tv"] if media_type == "all" else [media_type]
 
+        sort_map = {
+            "popularity": "popularity.desc",
+            "rating": "vote_average.desc",
+            "year_desc": "primary_release_date.desc",
+            "year_asc": "primary_release_date.asc",
+        }
+        tmdb_sort = sort_map.get(sort_by, "vote_average.desc")
+
         for t in types:
+            sort_param = tmdb_sort
+            if t == "tv" and sort_by in ["year_desc", "year_asc"]:
+                sort_param = tmdb_sort.replace("primary_release_date", "first_air_date")
+
             params = {
                 "api_key": TMDB_API_KEY,
                 "language": "pt-BR",
-                "sort_by": "popularity.desc",
+                "sort_by": sort_param,
                 "page": page,
+                "vote_count.gte": 50,
             }
             if genre_id:
                 params["with_genres"] = genre_id
@@ -40,7 +53,6 @@ async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: i
                 params["primary_release_date.lte" if t == "movie" else "first_air_date.lte"] = f"{year_max}-12-31"
             if min_rating:
                 params["vote_average.gte"] = min_rating
-                params["vote_count.gte"] = 100
 
             resp = await client.get(f"{TMDB_BASE}/discover/{t}", params=params)
             data = resp.json()
@@ -60,7 +72,13 @@ async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: i
                     tmdb_rating=rating
                 ))
 
-        results.sort(key=lambda x: float(x.tmdb_rating or 0), reverse=True)
+        if sort_by == "rating":
+            results.sort(key=lambda x: float(x.tmdb_rating or 0), reverse=True)
+        elif sort_by == "year_desc":
+            results.sort(key=lambda x: x.year or "0", reverse=True)
+        elif sort_by == "year_asc":
+            results.sort(key=lambda x: x.year or "0")
+
         return results
 
 async def search_titles(query: str) -> list[SearchResult]:

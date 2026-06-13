@@ -18,9 +18,10 @@ async def popular(
     year_min: int = Query(None, description="Ano mínimo"),
     year_max: int = Query(None, description="Ano máximo"),
     min_rating: float = Query(None, description="Nota mínima TMDB (0-10)"),
+    sort_by: str = Query("rating", description="popularity, rating, year_desc, year_asc"),
     page: int = Query(1, description="Página")
 ):
-    results = await get_popular(media_type, genre_id, year_min, year_max, min_rating, page)
+    results = await get_popular(media_type, genre_id, year_min, year_max, min_rating, sort_by, page)
     return results
 
 @router.get("/genres")

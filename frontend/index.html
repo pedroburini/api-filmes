@@ -630,23 +630,14 @@
     if (activeFilters.year_min) params.set('year_min', activeFilters.year_min);
     if (activeFilters.year_max) params.set('year_max', activeFilters.year_max);
     if (activeFilters.min_rating) params.set('min_rating', activeFilters.min_rating);
+    if (activeFilters.sort_by) params.set('sort_by', activeFilters.sort_by);
 
     try {
       const res = await fetch(`${API}/popular?${params}`);
       let data = await res.json();
 
-      // Ordenação no frontend
-      const sort = activeFilters.sort_by;
-      if (sort === 'rating') {
-        data.sort((a, b) => parseFloat(b.tmdb_rating || 0) - parseFloat(a.tmdb_rating || 0));
-      } else if (sort === 'year_desc') {
-        data.sort((a, b) => (b.year || '0').localeCompare(a.year || '0'));
-      } else if (sort === 'year_asc') {
-        data.sort((a, b) => (a.year || '0').localeCompare(b.year || '0'));
-      }
-
       renderGrid(data);
-      hasMore = data.length >= 15;
+      hasMore = data.length >= 0;
       currentPage++;
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
