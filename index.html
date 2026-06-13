@@ -623,7 +623,6 @@
   async function loadPopular() {
     if (isLoading || !hasMore) return;
     isLoading = true;
-    console.trace('loadPopular chamado');
 
     const pageToLoad = currentPage;
     currentPage++;
@@ -643,12 +642,9 @@
       const res = await fetch(`${API}/popular?${params}`);
       let data = await res.json();
 
-      console.log('data.length:', data.length, 'page:', pageToLoad);
-
       renderGrid(data);
       hasMore = data.length > 0;
       isLoading = false;
-      console.log('hasMore:', hasMore, 'isLoading:', isLoading, 'currentPage:', currentPage);
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
       else document.getElementById('sentinel').classList.remove('hidden');
@@ -686,7 +682,6 @@
     window.addEventListener('scroll', () => {
       const scrolledTo = window.scrollY + window.innerHeight;
       const totalHeight = document.documentElement.scrollHeight;
-      console.log('scroll:', scrolledTo, 'total:', totalHeight, 'isLoading:', isLoading, 'hasMore:', hasMore);
       if (scrolledTo >= totalHeight - 300 && !isLoading && hasMore) {
         loadPopular();
       }
