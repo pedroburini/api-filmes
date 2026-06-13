@@ -637,7 +637,7 @@
       let data = await res.json();
 
       renderGrid(data);
-      hasMore = data.length >= 20;
+      hasMore = data.length >= 10;
       currentPage++;
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
