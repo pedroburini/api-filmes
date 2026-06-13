@@ -529,7 +529,6 @@
   let activeFilters = {};
 
   // Init
-  isLoading = true;
   loadGenres();
   updateRangeFill();
   setupInfiniteScroll();
@@ -603,6 +602,7 @@
 
     currentPage = 1;
     hasMore = true;
+    isLoading = false;
     document.getElementById('posterGrid').innerHTML = '';
     loadPopular();
   }
