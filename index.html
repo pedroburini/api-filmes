@@ -683,14 +683,14 @@
 
   // ── INFINITE SCROLL ───────────────────────────────────
   function setupInfiniteScroll() {
-    const sentinel = document.getElementById('sentinel');
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !isLoading && hasMore) {
-        console.log('sentinel disparou');
+    window.addEventListener('scroll', () => {
+      const scrolledTo = window.scrollY + window.innerHeight;
+      const totalHeight = document.documentElement.scrollHeight;
+      console.log('scroll:', scrolledTo, 'total:', totalHeight, 'isLoading:', isLoading, 'hasMore:', hasMore);
+      if (scrolledTo >= totalHeight - 300 && !isLoading && hasMore) {
         loadPopular();
       }
-    }, { rootMargin: '400px', threshold: 0 });
-    observer.observe(sentinel);
+    });
   }
 
   // ── SEARCH ────────────────────────────────────────────
