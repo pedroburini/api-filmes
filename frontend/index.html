@@ -15,7 +15,7 @@
     }
 
     header {
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 2rem;
       border-bottom: 1px solid #1a1a1a;
       display: flex;
       align-items: center;
@@ -28,15 +28,10 @@
       z-index: 10;
     }
 
-    .logo { font-size: 1rem; font-weight: 600; color: #f0f0f0; letter-spacing: 0.04em; }
+    .logo { font-size: 1rem; font-weight: 600; color: #f0f0f0; letter-spacing: 0.04em; cursor: pointer; }
     .logo span { color: #555; font-weight: 400; font-size: 0.8rem; margin-left: 8px; }
 
-    .search-bar {
-      display: flex;
-      gap: 6px;
-      flex: 1;
-      max-width: 420px;
-    }
+    .search-bar { display: flex; gap: 6px; flex: 1; max-width: 420px; }
 
     .search-bar input {
       flex: 1;
@@ -68,14 +63,18 @@
 
     .filters {
       display: flex;
-      gap: 8px;
+      gap: 12px;
       padding: 1rem 2rem;
       flex-wrap: wrap;
       border-bottom: 1px solid #1a1a1a;
-      align-items: center;
+      align-items: flex-end;
     }
 
-    .filters select, .filters input[type=number] {
+    .filter-group { display: flex; flex-direction: column; gap: 5px; }
+
+    .filter-label { font-size: 0.72rem; color: #555; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .filters select {
       padding: 0.5rem 0.75rem;
       background: #151515;
       border: 1px solid #222;
@@ -84,36 +83,123 @@
       font-size: 0.8rem;
       outline: none;
       cursor: pointer;
-      transition: border 0.2s;
     }
 
-    .filters select:focus, .filters input[type=number]:focus { border-color: #444; }
-    .filters input[type=number] { width: 90px; }
+    .filters select:focus { border-color: #444; }
 
-    .filter-label { font-size: 0.75rem; color: #444; margin-right: 2px; }
+    /* RANGE SLIDER DUPLO */
+    .range-wrap {
+      position: relative;
+      width: 160px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
 
-    .filter-group { display: flex; align-items: center; gap: 6px; }
+    .range-track {
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background: #222;
+      border-radius: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .range-fill {
+      position: absolute;
+      height: 3px;
+      background: #555;
+      border-radius: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .range-wrap input[type=range] {
+      -webkit-appearance: none;
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+      pointer-events: none;
+      outline: none;
+    }
+
+    .range-wrap input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #888;
+      border: 1px solid #555;
+      pointer-events: all;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .range-wrap input[type=range]::-webkit-slider-thumb:hover { background: #ccc; }
+
+    .rating-input {
+      padding: 0.5rem 0.75rem;
+      background: #151515;
+      border: 1px solid #222;
+      border-radius: 6px;
+      color: #bbb;
+      font-size: 0.8rem;
+      outline: none;
+      width: 100px;
+    }
+
+    .rating-input:focus { border-color: #444; }
+
+    .filter-actions { display: flex; gap: 8px; align-items: flex-end; margin-left: auto; }
+
+    .btn-apply {
+      padding: 0.5rem 1.1rem;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #ccc;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-apply:hover { background: #272727; color: #f0f0f0; }
 
     .btn-clear {
+      padding: 0.5rem 0.75rem;
       background: none;
-      border: none;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
       color: #444;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      margin-left: auto;
       transition: color 0.15s;
     }
 
-    .btn-clear:hover { color: #888; }
+    .btn-clear:hover { color: #888; border-color: #333; }
 
     .grid-container { padding: 1.5rem 2rem; }
 
-    .grid-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #444;
+    .grid-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 1.25rem;
+    }
+
+    .grid-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #444; }
+
+    .sort-select {
+      padding: 0.35rem 0.65rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 5px;
+      color: #666;
+      font-size: 0.75rem;
+      outline: none;
+      cursor: pointer;
     }
 
     .poster-grid {
@@ -136,12 +222,7 @@
     .poster-card:hover { transform: translateY(-4px); border-color: #333; }
     .poster-card:hover .poster-overlay { opacity: 1; }
 
-    .poster-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .poster-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .poster-overlay {
       position: absolute;
@@ -156,40 +237,55 @@
     }
 
     .poster-title { font-size: 0.78rem; font-weight: 500; color: #f0f0f0; line-height: 1.3; margin-bottom: 4px; }
-    .poster-meta { font-size: 0.7rem; color: #888; display: flex; justify-content: space-between; align-items: center; }
+    .poster-meta { font-size: 0.7rem; color: #888; display: flex; justify-content: space-between; }
 
     .poster-badge {
       position: absolute;
       top: 8px;
       right: 8px;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.8);
       border: 1px solid #333;
       border-radius: 4px;
       padding: 2px 6px;
       font-size: 0.7rem;
       color: #ccc;
-      backdrop-filter: blur(4px);
     }
 
     .type-badge {
       position: absolute;
       top: 8px;
       left: 8px;
-      background: rgba(0,0,0,0.75);
-      border: 1px solid #333;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #2a2a2a;
       border-radius: 4px;
       padding: 2px 6px;
       font-size: 0.65rem;
-      color: #888;
-      backdrop-filter: blur(4px);
+      color: #777;
     }
 
-    .scroll-sentinel { height: 60px; display: flex; align-items: center; justify-content: center; }
-    .scroll-sentinel .dot { width: 6px; height: 6px; border-radius: 50%; background: #222; animation: pulse 1.2s infinite; }
-    .scroll-sentinel .dot:nth-child(2) { animation-delay: 0.2s; }
-    .scroll-sentinel .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes pulse { 0%,100%{opacity:0.2} 50%{opacity:0.8} }
+    .sentinel {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
 
+    .sentinel .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #222;
+      animation: pulse 1.2s infinite;
+    }
+
+    .sentinel .dot:nth-child(2) { animation-delay: 0.2s; }
+    .sentinel .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,100%{opacity:0.15} 50%{opacity:0.6} }
+
+    .sentinel.hidden { display: none; }
+
+    /* SEARCH RESULTS */
     .results-list {
       display: none;
       flex-direction: column;
@@ -224,25 +320,62 @@
     .result-info strong { display: block; font-size: 0.9rem; color: #e0e0e0; font-weight: 500; }
     .result-info span { font-size: 0.75rem; color: #555; }
 
-    .details-container {
-      max-width: 760px;
-      margin: 0 auto 4rem;
-      padding: 0 1rem;
+    /* DETAILS */
+    .modal-overlay {
       display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+      backdrop-filter: blur(3px);
     }
 
-    .back-btn {
+    .modal-overlay.active { display: flex; align-items: flex-start; justify-content: center; }
+
+    .modal-box {
+      background: #111;
+      border-radius: 12px;
+      border: 1px solid #1e1e1e;
+      overflow: hidden;
+      width: 100%;
+      max-width: 760px;
+      position: relative;
+      margin: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
       background: none;
       border: none;
-      color: #555;
-      font-size: 0.8rem;
+      color: #444;
+      font-size: 1.1rem;
+      font-weight: 700;
       cursor: pointer;
-      padding: 1rem 0;
-      display: block;
+      z-index: 10;
+      line-height: 1;
       transition: color 0.15s;
     }
 
-    .back-btn:hover { color: #aaa; }
+    .modal-close:hover { color: #ccc; }
+
+    .back-btn {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #aaa;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .back-btn:hover { background: #222; color: #f0f0f0; }
 
     .details-card {
       background: #111;
@@ -261,13 +394,12 @@
     }
 
     .details-info h2 { font-size: 1.35rem; font-weight: 600; color: #f0f0f0; margin-bottom: 0.3rem; line-height: 1.3; }
-    .meta { font-size: 0.78rem; color: #555; margin-bottom: 0.9rem; }
+    .d-meta { font-size: 0.78rem; color: #555; margin-bottom: 0.9rem; }
     .synopsis { font-size: 0.85rem; line-height: 1.65; color: #888; margin-bottom: 1rem; }
     .crew { font-size: 0.8rem; color: #555; line-height: 1.8; }
     .crew strong { color: #888; font-weight: 500; }
 
     .section { padding: 1.25rem 1.75rem; border-top: 1px solid #1a1a1a; }
-
     .section-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #444; margin-bottom: 1rem; }
 
     .ratings-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
@@ -310,41 +442,12 @@
       .details-top img { width: 120px; }
       .filters { padding: 1rem; }
     }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      position: absolute;
-      width: 100%;
-      height: 4px;
-      background: transparent;
-      pointer-events: none;
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #888;
-      border: 1px solid #444;
-      pointer-events: all;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    input[type=range]::-webkit-slider-thumb:hover { background: #bbb; }
-
-    input[type=range]::-webkit-slider-runnable-track {
-      height: 4px;
-      background: #222;
-      border-radius: 2px;
-    }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">FilmRate <span>notas e streaming</span></div>
+  <div class="logo" onclick="goHome()">FilmRate <span>notas e streaming</span></div>
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Buscar título..." />
     <button onclick="search()">Buscar</button>
@@ -354,56 +457,68 @@
 <div class="filters" id="filtersBar">
   <div class="filter-group">
     <span class="filter-label">Tipo</span>
-    <select id="filterType" onchange="resetAndLoad()">
+    <select id="filterType">
       <option value="all">Todos</option>
       <option value="movie">Filmes</option>
       <option value="tv">Séries</option>
     </select>
   </div>
+
   <div class="filter-group">
     <span class="filter-label">Gênero</span>
-    <select id="filterGenre" onchange="resetAndLoad()"><option value="">Todos</option></select>
+    <select id="filterGenre"><option value="">Todos</option></select>
   </div>
-  <div class="filter-group" style="flex-direction:column;align-items:flex-start;gap:4px">
+
+  <div class="filter-group">
     <span class="filter-label">Ano: <span id="yearDisplay">Todos</span></span>
-    <div style="position:relative;width:180px;height:24px">
-      <input type="range" id="yearMin" min="1950" max="2025" value="1950" step="1"
-        oninput="updateYearDisplay()" onchange="resetAndLoad()" />
-      <input type="range" id="yearMax" min="1950" max="2025" value="2025" step="1"
-        oninput="updateYearDisplay()" onchange="resetAndLoad()" />
+    <div class="range-wrap" id="rangeWrap">
+      <div class="range-track"></div>
+      <div class="range-fill" id="rangeFill"></div>
+      <input type="range" id="yearMin" min="1950" max="2026" value="1950" step="1" oninput="onYearInput()" />
+      <input type="range" id="yearMax" min="1950" max="2026" value="2026" step="1" oninput="onYearInput()" />
     </div>
   </div>
+
   <div class="filter-group">
-    <span class="filter-label">Nota mín.</span>
-    <input type="number" id="filterRating" placeholder="7.0" min="0" max="10" step="0.5" onchange="resetAndLoad()" />
+    <span class="filter-label">Nota mínima (TMDB)</span>
+    <input type="number" class="rating-input" id="filterRating" placeholder="Ex: 7.0" min="0" max="10" step="0.5" />
   </div>
+
   <div class="filter-group">
-    <span class="filter-label">Ordenar</span>
-    <select id="filterSort" onchange="resetAndLoad()">
-      <option value="popularity">Popularidade</option>
+    <span class="filter-label">Ordenar por</span>
+    <select id="filterSort">
       <option value="rating">Nota</option>
-      <option value="year_desc">Ano ↓</option>
-      <option value="year_asc">Ano ↑</option>
+      <option value="popularity">Popularidade</option>
+      <option value="year_desc">Ano (recente)</option>
+      <option value="year_asc">Ano (antigo)</option>
     </select>
   </div>
-  <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
+
+  <div class="filter-actions">
+    <button class="btn-apply" onclick="applyFilters()">Aplicar</button>
+    <button class="btn-clear" onclick="clearFilters()">Limpar</button>
+  </div>
 </div>
 
 <div id="homeView">
   <div class="grid-container">
-    <div class="grid-title" id="gridTitle">Popular agora</div>
+    <div class="grid-header">
+      <div class="grid-title" id="gridTitle">Popular agora</div>
+    </div>
     <div class="poster-grid" id="posterGrid"></div>
   </div>
-  <div class="scroll-sentinel" id="sentinel">
+  <div class="sentinel" id="sentinel">
     <div class="dot"></div><div class="dot"></div><div class="dot"></div>
   </div>
 </div>
 
 <div class="results-list" id="resultsList"></div>
 
-<div class="details-container" id="detailsContainer">
-  <button class="back-btn" onclick="goBack()">← voltar</button>
-  <div class="details-card" id="detailsCard"></div>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div id="detailsCard"></div>
+  </div>
 </div>
 
 <script>
@@ -411,32 +526,51 @@
   let currentPage = 1;
   let isLoading = false;
   let hasMore = true;
-  let genres = {};
-  let debounceTimer = null;
+  let activeFilters = {};
 
+  // Init
   loadGenres();
-  loadPopular(false);
+  updateRangeFill();
+  applyFilters();
   setupInfiniteScroll();
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') search();
   });
 
-  // Debounce para inputs numéricos
-  document.getElementById('filterYear').addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(resetAndLoad, 600);
-  });
+  // ── RANGE SLIDER ──────────────────────────────────────
+  function onYearInput() {
+    let min = parseInt(document.getElementById('yearMin').value);
+    let max = parseInt(document.getElementById('yearMax').value);
+    if (min > max) {
+      if (event.target.id === 'yearMin') {
+        document.getElementById('yearMin').value = max;
+        min = max;
+      } else {
+        document.getElementById('yearMax').value = min;
+        max = min;
+      }
+    }
+    const label = (min === 1950 && max === 2025) ? 'Todos' : `${min} – ${max}`;
+    document.getElementById('yearDisplay').textContent = label;
+    updateRangeFill();
+  }
 
-  document.getElementById('filterRating').addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(resetAndLoad, 600);
-  });
+  function updateRangeFill() {
+    const min = parseInt(document.getElementById('yearMin').value);
+    const max = parseInt(document.getElementById('yearMax').value);
+    const range = 2025 - 1950;
+    const left = ((min - 1950) / range) * 100;
+    const right = ((2025 - max) / range) * 100;
+    document.getElementById('rangeFill').style.left = left + '%';
+    document.getElementById('rangeFill').style.right = right + '%';
+  }
 
+  // ── GENRES ────────────────────────────────────────────
   async function loadGenres() {
     try {
       const res = await fetch(`${API}/genres`);
-      genres = await res.json();
+      const genres = await res.json();
       const sel = document.getElementById('filterGenre');
       Object.entries(genres).sort((a,b) => a[1].localeCompare(b[1])).forEach(([id, name]) => {
         const opt = document.createElement('option');
@@ -447,48 +581,62 @@
     } catch {}
   }
 
-  function getFilters() {
+  // ── FILTERS ───────────────────────────────────────────
+  function applyFilters() {
     const yearMin = parseInt(document.getElementById('yearMin').value);
     const yearMax = parseInt(document.getElementById('yearMax').value);
-    const yearMinActive = yearMin > 1950;
-    const yearMaxActive = yearMax < 2025;
-    return {
+    const rating = parseFloat(document.getElementById('filterRating').value);
+
+    activeFilters = {
       media_type: document.getElementById('filterType').value,
-      genre_id: document.getElementById('filterGenre').value,
-      year_min: yearMinActive ? yearMin : '',
-      year_max: yearMaxActive ? yearMax : '',
-      min_rating: document.getElementById('filterRating').value,
+      genre_id: document.getElementById('filterGenre').value || null,
+      year_min: yearMin > 1950 ? yearMin : null,
+      year_max: yearMax < 2026 ? yearMax : null,
+      min_rating: !isNaN(rating) ? rating : null,
       sort_by: document.getElementById('filterSort').value,
     };
-  }
 
-  function resetAndLoad() {
+    const isFiltered = activeFilters.genre_id || activeFilters.year_min || activeFilters.year_max
+      || activeFilters.min_rating || activeFilters.media_type !== 'all';
+    document.getElementById('gridTitle').textContent = isFiltered ? 'Resultados filtrados' : 'Popular agora';
+
     currentPage = 1;
     hasMore = true;
     document.getElementById('posterGrid').innerHTML = '';
-    const f = getFilters();
-    const isFiltered = f.genre_id || f.year || f.min_rating || f.media_type !== 'all' || f.sort_by !== 'popularity';
-    document.getElementById('gridTitle').textContent = isFiltered ? 'Resultados filtrados' : 'Popular agora';
-    loadPopular(false);
+    loadPopular();
   }
 
-  async function loadPopular(append) {
+  function clearFilters() {
+    document.getElementById('filterType').value = 'all';
+    document.getElementById('filterGenre').value = '';
+    document.getElementById('yearMin').value = '1950';
+    document.getElementById('yearMax').value = '2026';
+    document.getElementById('yearDisplay').textContent = 'Todos';
+    document.getElementById('filterRating').value = '';
+    document.getElementById('filterSort').value = 'popularity';
+    updateRangeFill();
+    applyFilters();
+  }
+
+  // ── LOAD POPULAR ──────────────────────────────────────
+  async function loadPopular() {
     if (isLoading || !hasMore) return;
     isLoading = true;
 
-    const filters = getFilters();
     const params = new URLSearchParams({ page: currentPage });
-    if (filters.media_type && filters.media_type !== 'all') params.set('media_type', filters.media_type);
-    if (filters.genre_id) params.set('genre_id', filters.genre_id);
-    if (filters.year) params.set('year', filters.year);
-    if (filters.min_rating) params.set('min_rating', filters.min_rating);
+    if (activeFilters.media_type && activeFilters.media_type !== 'all')
+      params.set('media_type', activeFilters.media_type);
+    if (activeFilters.genre_id) params.set('genre_id', activeFilters.genre_id);
+    if (activeFilters.year_min) params.set('year_min', activeFilters.year_min);
+    if (activeFilters.year_max) params.set('year_max', activeFilters.year_max);
+    if (activeFilters.min_rating) params.set('min_rating', activeFilters.min_rating);
 
     try {
       const res = await fetch(`${API}/popular?${params}`);
       let data = await res.json();
 
       // Ordenação no frontend
-      const sort = filters.sort_by;
+      const sort = activeFilters.sort_by;
       if (sort === 'rating') {
         data.sort((a, b) => parseFloat(b.tmdb_rating || 0) - parseFloat(a.tmdb_rating || 0));
       } else if (sort === 'year_desc') {
@@ -497,9 +645,13 @@
         data.sort((a, b) => (a.year || '0').localeCompare(b.year || '0'));
       }
 
-      renderGrid(data, append);
-      hasMore = data.length >= 10;
+      renderGrid(data);
+      hasMore = data.length >= 15;
       currentPage++;
+
+      if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
+      else document.getElementById('sentinel').classList.remove('hidden');
+
     } catch {
       hasMore = false;
     }
@@ -507,21 +659,20 @@
     isLoading = false;
   }
 
-  function renderGrid(items, append) {
+  function renderGrid(items) {
     const grid = document.getElementById('posterGrid');
-    if (!append) grid.innerHTML = '';
     items.forEach(item => {
       const card = document.createElement('div');
       card.className = 'poster-card';
       card.innerHTML = `
         <img src="${item.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${item.title}" loading="lazy" />
         <div class="type-badge">${item.media_type === 'movie' ? 'Filme' : 'Série'}</div>
-        ${item.tmdb_rating ? `<div class="poster-badge">⭐ ${item.tmdb_rating}</div>` : ''}
+        ${item.tmdb_rating && item.tmdb_rating !== '0.0' ? `<div class="poster-badge">⭐ ${item.tmdb_rating}</div>` : ''}
         <div class="poster-overlay">
           <div class="poster-title">${item.title}</div>
           <div class="poster-meta">
             <span>${item.year || ''}</span>
-            <span>${item.tmdb_rating || ''}</span>
+            <span>${item.tmdb_rating && item.tmdb_rating !== '0.0' ? item.tmdb_rating : ''}</span>
           </div>
         </div>
       `;
@@ -530,47 +681,41 @@
     });
   }
 
+  // ── INFINITE SCROLL ───────────────────────────────────
   function setupInfiniteScroll() {
     const sentinel = document.getElementById('sentinel');
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) loadPopular(true);
-    }, { threshold: 0.1 });
+      if (entries[0].isIntersecting && !isLoading && hasMore) loadPopular();
+    }, { rootMargin: '200px' });
     observer.observe(sentinel);
   }
 
-  function clearFilters() {
-    document.getElementById('filterType').value = 'all';
-    document.getElementById('filterGenre').value = '';
-    document.getElementById('yearMin').value = '1950';
-    document.getElementById('yearMax').value = '2025';
-    document.getElementById('yearDisplay').textContent = 'Todos';
-    document.getElementById('filterRating').value = '';
-    document.getElementById('filterSort').value = 'popularity';
-    resetAndLoad();
-  }
-
+  // ── SEARCH ────────────────────────────────────────────
   async function search() {
     const q = document.getElementById('searchInput').value.trim();
-    if (!q) { goBack(); return; }
+    if (!q) { goHome(); return; }
 
-    document.getElementById('homeView').style.display = 'none';
-    document.getElementById('filtersBar').style.display = 'none';
-    document.getElementById('detailsContainer').style.display = 'none';
-    document.getElementById('resultsList').style.display = 'flex';
-    document.getElementById('resultsList').innerHTML = '<div style="color:#444;font-size:0.85rem;padding:1rem">Buscando...</div>';
+    showView('search');
+    document.getElementById('resultsList').innerHTML =
+      '<div style="color:#444;font-size:0.85rem;padding:1rem">Buscando...</div>';
 
     try {
       const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
       const data = await res.json();
       renderResults(data);
     } catch {
-      document.getElementById('resultsList').innerHTML = '<div style="color:#444;font-size:0.85rem;padding:1rem">Erro ao buscar.</div>';
+      document.getElementById('resultsList').innerHTML =
+        '<div style="color:#444;font-size:0.85rem;padding:1rem">Erro ao buscar.</div>';
     }
   }
 
   function renderResults(results) {
     const list = document.getElementById('resultsList');
     list.innerHTML = '';
+    if (!results.length) {
+      list.innerHTML = '<div style="color:#444;font-size:0.85rem;padding:1rem">Nenhum resultado encontrado.</div>';
+      return;
+    }
     results.forEach(r => {
       const item = document.createElement('div');
       item.className = 'result-item';
@@ -578,7 +723,7 @@
         <img src="${r.poster || 'https://via.placeholder.com/38x56?text=?'}" alt="${r.title}" />
         <div class="result-info">
           <strong>${r.title}</strong>
-          <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'}${r.tmdb_rating ? ' · ⭐ ' + r.tmdb_rating : ''}</span>
+          <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'}${r.tmdb_rating && r.tmdb_rating !== '0.0' ? ' · ⭐ ' + r.tmdb_rating : ''}</span>
         </div>
       `;
       item.onclick = () => loadDetails(r.tmdb_id, r.media_type);
@@ -586,39 +731,28 @@
     });
   }
 
+  // ── DETAILS ───────────────────────────────────────────
   async function loadDetails(id, type) {
-    document.getElementById('homeView').style.display = 'none';
-    document.getElementById('filtersBar').style.display = 'none';
-    document.getElementById('resultsList').style.display = 'none';
-    document.getElementById('detailsContainer').style.display = 'block';
-    document.getElementById('detailsCard').innerHTML = '<div style="padding:2rem;text-align:center;color:#444;font-size:0.85rem">Carregando...</div>';
-    window.scrollTo({ top: 0 });
+    document.getElementById('detailsCard').innerHTML =
+      '<div style="padding:2rem;text-align:center;color:#444;font-size:0.85rem">Carregando...</div>';
+    openModal();
 
     try {
       const res = await fetch(`${API}/details/${type}/${id}`);
       const d = await res.json();
       renderDetails(d);
     } catch {
-      document.getElementById('detailsCard').innerHTML = '<div style="padding:2rem;text-align:center;color:#444">Erro ao carregar.</div>';
+      document.getElementById('detailsCard').innerHTML =
+        '<div style="padding:2rem;text-align:center;color:#444">Erro ao carregar.</div>';
     }
-  }
-
-  function goBack() {
-    document.getElementById('detailsContainer').style.display = 'none';
-    document.getElementById('filtersBar').style.display = 'flex';
-    const hasSearch = document.getElementById('searchInput').value.trim();
-    if (hasSearch) {
-      document.getElementById('resultsList').style.display = 'flex';
-    } else {
-      document.getElementById('homeView').style.display = 'block';
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function renderDetails(d) {
     const avg = d.average_rating ? `${d.average_rating}` : 'N/A';
     const streaming = d.streaming && d.streaming.length > 0
-      ? d.streaming.map(s => `<img src="${s.logo_path}" title="${s.provider_name}" alt="${s.provider_name}" />`).join('')
+      ? d.streaming.map(s =>
+          `<img src="${s.logo_path}" title="${s.provider_name}" alt="${s.provider_name}" />`
+        ).join('')
       : '<span class="no-streaming">Não disponível no Brasil</span>';
 
     document.getElementById('detailsCard').innerHTML = `
@@ -626,7 +760,7 @@
         <img src="${d.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${d.title}" />
         <div class="details-info">
           <h2>${d.title} ${d.year ? `<span style="color:#444;font-weight:400;font-size:1rem">(${d.year})</span>` : ''}</h2>
-          <p class="meta">${[d.genres, d.runtime].filter(Boolean).join(' · ')}</p>
+          <p class="d-meta">${[d.genres, d.runtime].filter(Boolean).join(' · ')}</p>
           <p class="synopsis">${d.synopsis || 'Sinopse não disponível.'}</p>
           <div class="crew">
             ${d.director ? `<div><strong>Diretor</strong> ${d.director}</div>` : ''}
@@ -651,17 +785,37 @@
     `;
   }
 
-  function updateYearDisplay() {
-    const min = parseInt(document.getElementById('yearMin').value);
-    const max = parseInt(document.getElementById('yearMax').value);
-    if (min > max) {
-      document.getElementById(event.target.id === 'yearMin' ? 'yearMin' : 'yearMax').value = 
-        event.target.id === 'yearMin' ? max : min;
-    }
-    const minVal = parseInt(document.getElementById('yearMin').value);
-    const maxVal = parseInt(document.getElementById('yearMax').value);
-    document.getElementById('yearDisplay').textContent = 
-      minVal === 1950 && maxVal === 2025 ? 'Todos' : `${minVal} – ${maxVal}`;
+  // ── VIEW MANAGEMENT ───────────────────────────────────
+  function showView(view) {
+    document.getElementById('homeView').style.display = view === 'home' ? 'block' : 'none';
+    document.getElementById('resultsList').style.display = view === 'search' ? 'flex' : 'none';
+    document.getElementById('filtersBar').style.display = view === 'home' ? 'flex' : 'none';
+    if (view !== 'details') closeModalDirect();
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+  }
+
+  function closeModalDirect() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    window.scrollTo({ top: 0 });
+  }
+
+  function goBack() {
+    closeModalDirect();
+  }
+
+  function goHome() {
+    document.getElementById('searchInput').value = '';
+    showView('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
