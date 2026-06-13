@@ -624,6 +624,7 @@
     isLoading = true;
 
     const params = new URLSearchParams({ page: currentPage });
+    console.log('requisitando page:', currentPage);
     if (activeFilters.media_type && activeFilters.media_type !== 'all')
       params.set('media_type', activeFilters.media_type);
     if (activeFilters.genre_id) params.set('genre_id', activeFilters.genre_id);
@@ -638,8 +639,8 @@
 
       renderGrid(data);
       console.log('data.length:', data.length, 'page:', currentPage);
-      hasMore = data.length >= 10;
       currentPage++;
+      hasMore = data.length >= 10;
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
       else document.getElementById('sentinel').classList.remove('hidden');
