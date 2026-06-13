@@ -532,7 +532,7 @@
   loadGenres();
   updateRangeFill();
   setupInfiniteScroll();
-  applyFilters();
+  setTimeout(() => applyFilters(), 0);
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') search();
