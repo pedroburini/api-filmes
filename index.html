@@ -685,8 +685,11 @@
   function setupInfiniteScroll() {
     const sentinel = document.getElementById('sentinel');
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !isLoading && hasMore) loadPopular();
-    }, { rootMargin: '200px' });
+      if (entries[0].isIntersecting && !isLoading && hasMore) {
+        console.log('sentinel disparou');
+        loadPopular();
+      }
+    }, { rootMargin: '400px', threshold: 0 });
     observer.observe(sentinel);
   }
 
