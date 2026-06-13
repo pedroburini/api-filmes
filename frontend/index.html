@@ -637,6 +637,7 @@
       let data = await res.json();
 
       renderGrid(data);
+      console.log('data.length:', data.length, 'page:', currentPage);
       hasMore = data.length >= 10;
       currentPage++;
 
