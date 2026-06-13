@@ -623,6 +623,7 @@
   async function loadPopular() {
     if (isLoading || !hasMore) return;
     isLoading = true;
+    console.trace('loadPopular chamado');
 
     const pageToLoad = currentPage;
     currentPage++;
