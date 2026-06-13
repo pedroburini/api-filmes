@@ -623,8 +623,10 @@
     if (isLoading || !hasMore) return;
     isLoading = true;
 
-    const params = new URLSearchParams({ page: currentPage });
-    console.log('requisitando page:', currentPage);
+    const pageToLoad = currentPage;
+    currentPage++;
+
+    const params = new URLSearchParams({ page: pageToLoad });
     if (activeFilters.media_type && activeFilters.media_type !== 'all')
       params.set('media_type', activeFilters.media_type);
     if (activeFilters.genre_id) params.set('genre_id', activeFilters.genre_id);
@@ -633,14 +635,16 @@
     if (activeFilters.min_rating) params.set('min_rating', activeFilters.min_rating);
     if (activeFilters.sort_by) params.set('sort_by', activeFilters.sort_by);
 
+    console.log('requisitando page:', pageToLoad);
+
     try {
       const res = await fetch(`${API}/popular?${params}`);
       let data = await res.json();
 
+      console.log('data.length:', data.length, 'page:', pageToLoad);
+
       renderGrid(data);
-      console.log('data.length:', data.length, 'page:', currentPage);
-      currentPage++;
-      hasMore = data.length >= 10;
+      hasMore = data.length > 0;
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
       else document.getElementById('sentinel').classList.remove('hidden');
