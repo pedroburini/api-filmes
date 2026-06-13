@@ -647,9 +647,8 @@
 
       renderGrid(data);
       hasMore = data.length > 0;
-      console.log('hasMore:', hasMore, 'isLoading:', isLoading, 'currentPage:', currentPage);
-
       isLoading = false;
+      console.log('hasMore:', hasMore, 'isLoading:', isLoading, 'currentPage:', currentPage);
 
       if (!hasMore) document.getElementById('sentinel').classList.add('hidden');
       else document.getElementById('sentinel').classList.remove('hidden');
