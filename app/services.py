@@ -43,7 +43,7 @@ async def get_popular(media_type: str, genre_id: int, year_min: int, year_max: i
                 "language": "pt-BR",
                 "sort_by": sort_param,
                 "page": page,
-                "vote_count.gte": 50,
+                "vote_count.gte": 300,
             }
             if genre_id:
                 params["with_genres"] = genre_id
