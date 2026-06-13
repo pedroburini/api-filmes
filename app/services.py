@@ -23,7 +23,6 @@ async def get_genres() -> dict:
 async def get_popular(media_type: str, genre_id: int, year: int, min_rating: float, page: int) -> list[SearchResult]:
     async with httpx.AsyncClient() as client:
         results = []
-
         types = ["movie", "tv"] if media_type == "all" else [media_type]
 
         for t in types:
@@ -32,7 +31,6 @@ async def get_popular(media_type: str, genre_id: int, year: int, min_rating: flo
                 "language": "pt-BR",
                 "sort_by": "popularity.desc",
                 "page": page,
-                "with_original_language": "en"
             }
             if genre_id:
                 params["with_genres"] = genre_id
@@ -48,7 +46,7 @@ async def get_popular(media_type: str, genre_id: int, year: int, min_rating: flo
             resp = await client.get(f"{TMDB_BASE}/discover/{t}", params=params)
             data = resp.json()
 
-            for item in data.get("results", [])[:10]:
+            for item in data.get("results", []):
                 title = item.get("title") or item.get("name")
                 date = item.get("release_date") or item.get("first_air_date", "")
                 year_val = date[:4] if date else None
@@ -64,7 +62,7 @@ async def get_popular(media_type: str, genre_id: int, year: int, min_rating: flo
                 ))
 
         results.sort(key=lambda x: float(x.tmdb_rating or 0), reverse=True)
-        return results[:20]
+        return results
 
 async def search_titles(query: str) -> list[SearchResult]:
     async with httpx.AsyncClient() as client:
