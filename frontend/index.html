@@ -15,72 +15,226 @@
     }
 
     header {
-      padding: 2rem 2rem 1rem;
-      border-bottom: 1px solid #1e1e1e;
-    }
-
-    header h1 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #f0f0f0;
-      letter-spacing: 0.04em;
-    }
-
-    header p {
-      font-size: 0.78rem;
-      color: #555;
-      margin-top: 2px;
-    }
-
-    .search-container {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #1a1a1a;
       display: flex;
-      justify-content: center;
-      padding: 3rem 1rem 1.5rem;
-      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
-    .search-container input {
-      width: 100%;
-      max-width: 480px;
-      padding: 0.75rem 1rem;
+    .logo { font-size: 1rem; font-weight: 600; color: #f0f0f0; letter-spacing: 0.04em; }
+    .logo span { color: #666; font-weight: 400; font-size: 0.8rem; margin-left: 8px; }
+
+    .search-bar {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 0.6rem 0.9rem;
       border-radius: 6px;
-      border: 1px solid #2a2a2a;
+      border: 1px solid #222;
       background: #151515;
       color: #e0e0e0;
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       outline: none;
       transition: border 0.2s;
     }
 
-    .search-container input::placeholder { color: #444; }
+    .search-bar input::placeholder { color: #444; }
+    .search-bar input:focus { border-color: #444; }
 
-    .search-container input:focus {
-      border-color: #555;
-    }
-
-    .search-container button {
-      padding: 0.75rem 1.25rem;
-      background: #252525;
-      color: #ccc;
+    .search-bar button {
+      padding: 0.6rem 1rem;
+      background: #222;
+      color: #bbb;
       border: 1px solid #2a2a2a;
       border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .search-bar button:hover { background: #2a2a2a; color: #f0f0f0; }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      padding: 1.25rem 2rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #1a1a1a;
+      align-items: center;
+    }
+
+    .filters select, .filters input[type=number] {
+      padding: 0.5rem 0.75rem;
+      background: #151515;
+      border: 1px solid #222;
+      border-radius: 6px;
+      color: #bbb;
+      font-size: 0.8rem;
+      outline: none;
+      cursor: pointer;
+      transition: border 0.2s;
+    }
+
+    .filters select:focus, .filters input[type=number]:focus { border-color: #444; }
+    .filters input[type=number] { width: 90px; }
+
+    .filter-label {
+      font-size: 0.75rem;
+      color: #444;
+      margin-right: 2px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-filter {
+      padding: 0.5rem 1rem;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #aaa;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-left: auto;
+    }
+
+    .btn-filter:hover { background: #252525; color: #f0f0f0; }
+
+    .grid-container {
+      padding: 1.5rem 2rem;
+    }
+
+    .grid-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #444;
+      margin-bottom: 1.25rem;
+    }
+
+    .poster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .poster-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #151515;
+      border: 1px solid #1a1a1a;
+      transition: transform 0.2s, border-color 0.2s;
+      aspect-ratio: 2/3;
+    }
+
+    .poster-card:hover { transform: translateY(-4px); border-color: #333; }
+    .poster-card:hover .poster-overlay { opacity: 1; }
+
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .poster-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 40%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.75rem;
+    }
+
+    .poster-title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #f0f0f0;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .poster-meta {
+      font-size: 0.7rem;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .poster-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.75);
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      color: #ccc;
+      backdrop-filter: blur(4px);
+    }
+
+    .type-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.75);
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.65rem;
+      color: #888;
+      backdrop-filter: blur(4px);
+    }
+
+    .load-more {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 2rem;
+      background: #151515;
+      border: 1px solid #222;
+      border-radius: 8px;
+      color: #888;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
     }
 
-    .search-container button:hover {
-      background: #2e2e2e;
-      color: #f0f0f0;
+    .load-more:hover { background: #1e1e1e; color: #f0f0f0; }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #333;
+      font-size: 0.85rem;
     }
 
+    /* SEARCH RESULTS */
     .results-list {
       display: flex;
       flex-direction: column;
       gap: 6px;
       max-width: 560px;
-      margin: 0 auto;
-      padding: 0 1rem 2rem;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
     }
 
     .result-item {
@@ -95,10 +249,7 @@
       transition: border-color 0.15s, background 0.15s;
     }
 
-    .result-item:hover {
-      background: #181818;
-      border-color: #333;
-    }
+    .result-item:hover { background: #181818; border-color: #333; }
 
     .result-item img {
       width: 38px;
@@ -108,32 +259,29 @@
       background: #1e1e1e;
     }
 
-    .result-info strong {
-      display: block;
-      font-size: 0.9rem;
-      color: #e0e0e0;
-      font-weight: 500;
-    }
+    .result-info strong { display: block; font-size: 0.9rem; color: #e0e0e0; font-weight: 500; }
+    .result-info span { font-size: 0.75rem; color: #555; }
 
-    .result-info span {
-      font-size: 0.75rem;
-      color: #555;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 2rem;
-      color: #444;
-      font-size: 0.85rem;
-      display: none;
-    }
-
+    /* DETAILS */
     .details-container {
       max-width: 760px;
       margin: 0 auto 4rem;
       padding: 0 1rem;
       display: none;
     }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 1rem 0;
+      display: block;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover { color: #aaa; }
 
     .details-card {
       background: #111;
@@ -163,34 +311,12 @@
       line-height: 1.3;
     }
 
-    .meta {
-      font-size: 0.78rem;
-      color: #555;
-      margin-bottom: 0.9rem;
-    }
+    .meta { font-size: 0.78rem; color: #555; margin-bottom: 0.9rem; }
+    .synopsis { font-size: 0.85rem; line-height: 1.65; color: #888; margin-bottom: 1rem; }
+    .crew { font-size: 0.8rem; color: #555; line-height: 1.8; }
+    .crew strong { color: #888; font-weight: 500; }
 
-    .synopsis {
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: #888;
-      margin-bottom: 1rem;
-    }
-
-    .crew {
-      font-size: 0.8rem;
-      color: #555;
-      line-height: 1.8;
-    }
-
-    .crew strong {
-      color: #888;
-      font-weight: 500;
-    }
-
-    .section {
-      padding: 1.25rem 1.75rem;
-      border-top: 1px solid #1a1a1a;
-    }
+    .section { padding: 1.25rem 1.75rem; border-top: 1px solid #1a1a1a; }
 
     .section-label {
       font-size: 0.7rem;
@@ -200,11 +326,7 @@
       margin-bottom: 1rem;
     }
 
-    .ratings-grid {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
+    .ratings-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
     .rating-badge {
       background: #0f0f0f;
@@ -215,32 +337,13 @@
       min-width: 100px;
     }
 
-    .rating-badge .source {
-      font-size: 0.7rem;
-      color: #444;
-      margin-bottom: 5px;
-    }
-
-    .rating-badge .score {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #ccc;
-    }
-
-    .rating-badge.average {
-      background: #1a1a1a;
-      border-color: #2a2a2a;
-    }
-
+    .rating-badge .source { font-size: 0.7rem; color: #444; margin-bottom: 5px; }
+    .rating-badge .score { font-size: 1.25rem; font-weight: 600; color: #ccc; }
+    .rating-badge.average { background: #1a1a1a; border-color: #2a2a2a; }
     .rating-badge.average .source { color: #555; }
     .rating-badge.average .score { color: #e0e0e0; }
 
-    .streaming-logos {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+    .streaming-logos { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
     .streaming-logos img {
       width: 42px;
@@ -253,167 +356,266 @@
     }
 
     .streaming-logos img:hover { opacity: 1; }
+    .no-streaming { font-size: 0.8rem; color: #444; }
 
-    .no-streaming {
-      font-size: 0.8rem;
-      color: #444;
-    }
-
-    .back-btn {
-      background: none;
-      border: none;
-      color: #555;
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 0 1rem 1rem;
-      display: block;
-      transition: color 0.15s;
-    }
-
-    .back-btn:hover { color: #aaa; }
-
-    @media (max-width: 560px) {
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .search-bar { max-width: 100%; width: 100%; }
+      .poster-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
       .details-top { flex-direction: column; align-items: center; text-align: center; }
       .details-top img { width: 120px; }
+      .filters { padding: 1rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>FilmRate</h1>
-    <p>Notas e streaming em um só lugar</p>
-  </header>
-
-  <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Buscar filme ou série..." />
+<header>
+  <div class="logo">FilmRate <span>notas e streaming</span></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Buscar título..." />
     <button onclick="search()">Buscar</button>
   </div>
+</header>
 
-  <div class="loading" id="loading">Buscando...</div>
-  <div class="results-list" id="resultsList"></div>
-
-  <div class="details-container" id="detailsContainer">
-    <button class="back-btn" onclick="goBack()">← voltar</button>
-    <div class="details-card" id="detailsCard"></div>
+<div class="filters" id="filtersBar">
+  <div class="filter-group">
+    <span class="filter-label">Tipo</span>
+    <select id="filterType">
+      <option value="all">Todos</option>
+      <option value="movie">Filmes</option>
+      <option value="tv">Séries</option>
+    </select>
   </div>
+  <div class="filter-group">
+    <span class="filter-label">Gênero</span>
+    <select id="filterGenre"><option value="">Todos</option></select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Ano</span>
+    <input type="number" id="filterYear" placeholder="2024" min="1900" max="2025" />
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Nota mín.</span>
+    <input type="number" id="filterRating" placeholder="7.0" min="0" max="10" step="0.5" />
+  </div>
+  <button class="btn-filter" onclick="applyFilters()">Aplicar</button>
+  <button class="btn-filter" onclick="clearFilters()" style="background:none;border:none;color:#444">Limpar</button>
+</div>
 
-  <script>
-    const API = 'https://api-filmes-production-5797.up.railway.app/api';
+<div id="homeView">
+  <div class="grid-container">
+    <div class="grid-title" id="gridTitle">Popular agora</div>
+    <div class="poster-grid" id="posterGrid">
+      <div class="loading">Carregando...</div>
+    </div>
+  </div>
+  <button class="load-more" id="loadMoreBtn" onclick="loadMore()" style="display:none">Carregar mais</button>
+</div>
 
-    document.getElementById('searchInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') search();
-    });
+<div class="results-list" id="resultsList" style="display:none"></div>
 
-    async function search() {
-      const q = document.getElementById('searchInput').value.trim();
-      if (!q) return;
-      document.getElementById('resultsList').innerHTML = '';
-      document.getElementById('detailsContainer').style.display = 'none';
-      document.getElementById('loading').style.display = 'block';
-      try {
-        const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
-        const data = await res.json();
-        document.getElementById('loading').style.display = 'none';
-        renderResults(data);
-      } catch {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('resultsList').innerHTML = '<p style="color:#444;text-align:center;font-size:0.85rem">Erro ao buscar. Tente novamente.</p>';
-      }
-    }
+<div class="details-container" id="detailsContainer">
+  <button class="back-btn" onclick="goBack()">← voltar</button>
+  <div class="details-card" id="detailsCard"></div>
+</div>
 
-    function renderResults(results) {
-      const list = document.getElementById('resultsList');
-      list.innerHTML = '';
-      results.forEach(r => {
-        const item = document.createElement('div');
-        item.className = 'result-item';
-        item.innerHTML = `
-          <img src="${r.poster || 'https://via.placeholder.com/38x56?text=?'}" alt="${r.title}" />
-          <div class="result-info">
-            <strong>${r.title}</strong>
-            <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'}</span>
-          </div>
-        `;
-        item.onclick = () => loadDetails(r.tmdb_id, r.media_type);
-        list.appendChild(item);
+<script>
+  const API = 'https://api-filmes-production-5797.up.railway.app/api';
+  let currentPage = 1;
+  let currentFilters = {};
+  let genres = {};
+
+  // Init
+  loadGenres();
+  loadPopular(1, {}, false);
+
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') search();
+  });
+
+  async function loadGenres() {
+    try {
+      const res = await fetch(`${API}/genres`);
+      genres = await res.json();
+      const sel = document.getElementById('filterGenre');
+      Object.entries(genres).sort((a,b) => a[1].localeCompare(b[1])).forEach(([id, name]) => {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        sel.appendChild(opt);
       });
+    } catch {}
+  }
+
+  async function loadPopular(page, filters, append) {
+    if (!append) {
+      document.getElementById('posterGrid').innerHTML = '<div class="loading">Carregando...</div>';
     }
+    const params = new URLSearchParams({ page, ...filters });
+    Object.keys(filters).forEach(k => { if (!filters[k]) params.delete(k); });
 
-    async function loadDetails(id, type) {
-      document.getElementById('resultsList').innerHTML = '';
-      document.getElementById('detailsContainer').style.display = 'none';
-      document.getElementById('loading').style.display = 'block';
-      try {
-        const res = await fetch(`${API}/details/${type}/${id}`);
-        const d = await res.json();
-        document.getElementById('loading').style.display = 'none';
-        renderDetails(d);
-      } catch {
-        document.getElementById('loading').style.display = 'none';
-      }
+    try {
+      const res = await fetch(`${API}/popular?${params}`);
+      const data = await res.json();
+      renderGrid(data, append);
+      document.getElementById('loadMoreBtn').style.display = data.length >= 10 ? 'block' : 'none';
+    } catch {
+      document.getElementById('posterGrid').innerHTML = '<div class="loading">Erro ao carregar.</div>';
     }
+  }
 
-    function goBack() {
-      document.getElementById('detailsContainer').style.display = 'none';
-      document.getElementById('resultsList').innerHTML = '';
-    }
-
-    function renderDetails(d) {
-      const avg = d.average_rating ? `${d.average_rating}` : 'N/A';
-      const streaming = d.streaming && d.streaming.length > 0
-        ? d.streaming.map(s => `<img src="${s.logo_path}" title="${s.provider_name}" alt="${s.provider_name}" />`).join('')
-        : '<span class="no-streaming">Não disponível no Brasil</span>';
-
-      document.getElementById('detailsCard').innerHTML = `
-        <div class="details-top">
-          <img src="${d.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${d.title}" />
-          <div class="details-info">
-            <h2>${d.title} ${d.year ? `<span style="color:#444;font-weight:400;font-size:1rem">(${d.year})</span>` : ''}</h2>
-            <p class="meta">${[d.genres, d.runtime].filter(Boolean).join(' · ')}</p>
-            <p class="synopsis">${d.synopsis || 'Sinopse não disponível.'}</p>
-            <div class="crew">
-              ${d.director ? `<div><strong>Diretor</strong> ${d.director}</div>` : ''}
-              ${d.cast ? `<div><strong>Elenco</strong> ${d.cast}</div>` : ''}
-            </div>
+  function renderGrid(items, append) {
+    const grid = document.getElementById('posterGrid');
+    if (!append) grid.innerHTML = '';
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'poster-card';
+      card.innerHTML = `
+        <img src="${item.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${item.title}" loading="lazy" />
+        <div class="type-badge">${item.media_type === 'movie' ? 'Filme' : 'Série'}</div>
+        ${item.tmdb_rating ? `<div class="poster-badge">⭐ ${item.tmdb_rating}</div>` : ''}
+        <div class="poster-overlay">
+          <div class="poster-title">${item.title}</div>
+          <div class="poster-meta">
+            <span>${item.year || ''}</span>
+            <span>${item.tmdb_rating || ''}</span>
           </div>
-        </div>
-
-        <div class="section">
-          <div class="section-label">Avaliações</div>
-          <div class="ratings-grid">
-            <div class="rating-badge">
-              <div class="source">IMDb</div>
-              <div class="score">${d.imdb_rating || 'N/A'}</div>
-            </div>
-            <div class="rating-badge">
-              <div class="source">Rotten Tomatoes</div>
-              <div class="score">${d.rotten_tomatoes || 'N/A'}</div>
-            </div>
-            <div class="rating-badge">
-              <div class="source">Metacritic</div>
-              <div class="score">${d.metacritic || 'N/A'}</div>
-            </div>
-            <div class="rating-badge">
-              <div class="source">TMDB</div>
-              <div class="score">${d.tmdb_rating || 'N/A'}</div>
-            </div>
-            <div class="rating-badge average">
-              <div class="source">Média</div>
-              <div class="score">${avg}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-label">Disponível no Brasil</div>
-          <div class="streaming-logos">${streaming}</div>
         </div>
       `;
+      card.onclick = () => loadDetails(item.tmdb_id, item.media_type);
+      grid.appendChild(card);
+    });
+  }
 
-      document.getElementById('detailsContainer').style.display = 'block';
-      document.getElementById('detailsContainer').scrollIntoView({ behavior: 'smooth' });
+  function applyFilters() {
+    currentPage = 1;
+    currentFilters = {
+      media_type: document.getElementById('filterType').value,
+      genre_id: document.getElementById('filterGenre').value,
+      year: document.getElementById('filterYear').value,
+      min_rating: document.getElementById('filterRating').value,
+    };
+    document.getElementById('gridTitle').textContent = 'Resultados filtrados';
+    loadPopular(1, currentFilters, false);
+  }
+
+  function clearFilters() {
+    document.getElementById('filterType').value = 'all';
+    document.getElementById('filterGenre').value = '';
+    document.getElementById('filterYear').value = '';
+    document.getElementById('filterRating').value = '';
+    currentFilters = {};
+    currentPage = 1;
+    document.getElementById('gridTitle').textContent = 'Popular agora';
+    loadPopular(1, {}, false);
+  }
+
+  function loadMore() {
+    currentPage++;
+    loadPopular(currentPage, currentFilters, true);
+  }
+
+  async function search() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) return;
+
+    document.getElementById('homeView').style.display = 'none';
+    document.getElementById('filtersBar').style.display = 'none';
+    document.getElementById('detailsContainer').style.display = 'none';
+    document.getElementById('resultsList').style.display = 'flex';
+    document.getElementById('resultsList').innerHTML = '<div style="color:#444;font-size:0.85rem;padding:1rem">Buscando...</div>';
+
+    try {
+      const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      renderResults(data);
+    } catch {
+      document.getElementById('resultsList').innerHTML = '<div style="color:#444;font-size:0.85rem;padding:1rem">Erro ao buscar.</div>';
     }
-  </script>
+  }
+
+  function renderResults(results) {
+    const list = document.getElementById('resultsList');
+    list.innerHTML = '';
+    results.forEach(r => {
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      item.innerHTML = `
+        <img src="${r.poster || 'https://via.placeholder.com/38x56?text=?'}" alt="${r.title}" />
+        <div class="result-info">
+          <strong>${r.title}</strong>
+          <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'} ${r.tmdb_rating ? '· ⭐ ' + r.tmdb_rating : ''}</span>
+        </div>
+      `;
+      item.onclick = () => loadDetails(r.tmdb_id, r.media_type);
+      list.appendChild(item);
+    });
+  }
+
+  async function loadDetails(id, type) {
+    document.getElementById('homeView').style.display = 'none';
+    document.getElementById('filtersBar').style.display = 'none';
+    document.getElementById('resultsList').style.display = 'none';
+    document.getElementById('detailsContainer').style.display = 'block';
+    document.getElementById('detailsCard').innerHTML = '<div class="loading" style="display:block">Carregando...</div>';
+
+    try {
+      const res = await fetch(`${API}/details/${type}/${id}`);
+      const d = await res.json();
+      renderDetails(d);
+    } catch {
+      document.getElementById('detailsCard').innerHTML = '<div class="loading" style="display:block">Erro ao carregar.</div>';
+    }
+  }
+
+  function goBack() {
+    document.getElementById('detailsContainer').style.display = 'none';
+    document.getElementById('filtersBar').style.display = 'flex';
+    const hasSearch = document.getElementById('searchInput').value.trim();
+    if (hasSearch) {
+      document.getElementById('resultsList').style.display = 'flex';
+    } else {
+      document.getElementById('homeView').style.display = 'block';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderDetails(d) {
+    const avg = d.average_rating ? `${d.average_rating}` : 'N/A';
+    const streaming = d.streaming && d.streaming.length > 0
+      ? d.streaming.map(s => `<img src="${s.logo_path}" title="${s.provider_name}" alt="${s.provider_name}" />`).join('')
+      : '<span class="no-streaming">Não disponível no Brasil</span>';
+
+    document.getElementById('detailsCard').innerHTML = `
+      <div class="details-top">
+        <img src="${d.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${d.title}" />
+        <div class="details-info">
+          <h2>${d.title} ${d.year ? `<span style="color:#444;font-weight:400;font-size:1rem">(${d.year})</span>` : ''}</h2>
+          <p class="meta">${[d.genres, d.runtime].filter(Boolean).join(' · ')}</p>
+          <p class="synopsis">${d.synopsis || 'Sinopse não disponível.'}</p>
+          <div class="crew">
+            ${d.director ? `<div><strong>Diretor</strong> ${d.director}</div>` : ''}
+            ${d.cast ? `<div><strong>Elenco</strong> ${d.cast}</div>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-label">Avaliações</div>
+        <div class="ratings-grid">
+          <div class="rating-badge"><div class="source">IMDb</div><div class="score">${d.imdb_rating || 'N/A'}</div></div>
+          <div class="rating-badge"><div class="source">Rotten Tomatoes</div><div class="score">${d.rotten_tomatoes || 'N/A'}</div></div>
+          <div class="rating-badge"><div class="source">Metacritic</div><div class="score">${d.metacritic || 'N/A'}</div></div>
+          <div class="rating-badge"><div class="source">TMDB</div><div class="score">${d.tmdb_rating || 'N/A'}</div></div>
+          <div class="rating-badge average"><div class="source">Média</div><div class="score">${avg}</div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-label">Disponível no Brasil</div>
+        <div class="streaming-logos">${streaming}</div>
+      </div>
+    `;
+  }
+</script>
 </body>
 </html>

@@ -33,4 +33,3 @@ async def details(tmdb_id: int, media_type: str):
         raise HTTPException(status_code=400, detail="media_type deve ser 'movie' ou 'tv'")
     result = await get_title_details(tmdb_id, media_type)
     return result
-    
