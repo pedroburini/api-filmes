@@ -12,15 +12,65 @@ OMDB_BASE = "http://www.omdbapi.com"
 POSTER_BASE = "https://image.tmdb.org/t/p/w500"
 LOGO_BASE = "https://image.tmdb.org/t/p/w92"
 
+async def get_genres() -> dict:
+    async with httpx.AsyncClient() as client:
+        movie = await client.get(f"{TMDB_BASE}/genre/movie/list", params={"api_key": TMDB_API_KEY, "language": "pt-BR"})
+        tv = await client.get(f"{TMDB_BASE}/genre/tv/list", params={"api_key": TMDB_API_KEY, "language": "pt-BR"})
+        all_genres = {g["id"]: g["name"] for g in movie.json().get("genres", [])}
+        all_genres.update({g["id"]: g["name"] for g in tv.json().get("genres", [])})
+        return all_genres
+
+async def get_popular(media_type: str, genre_id: int, year: int, min_rating: float, page: int) -> list[SearchResult]:
+    async with httpx.AsyncClient() as client:
+        results = []
+
+        types = ["movie", "tv"] if media_type == "all" else [media_type]
+
+        for t in types:
+            params = {
+                "api_key": TMDB_API_KEY,
+                "language": "pt-BR",
+                "sort_by": "popularity.desc",
+                "page": page,
+                "with_original_language": "en"
+            }
+            if genre_id:
+                params["with_genres"] = genre_id
+            if year:
+                if t == "movie":
+                    params["primary_release_year"] = year
+                else:
+                    params["first_air_date_year"] = year
+            if min_rating:
+                params["vote_average.gte"] = min_rating
+                params["vote_count.gte"] = 100
+
+            resp = await client.get(f"{TMDB_BASE}/discover/{t}", params=params)
+            data = resp.json()
+
+            for item in data.get("results", [])[:10]:
+                title = item.get("title") or item.get("name")
+                date = item.get("release_date") or item.get("first_air_date", "")
+                year_val = date[:4] if date else None
+                poster = f"{POSTER_BASE}{item['poster_path']}" if item.get("poster_path") else None
+                rating = str(round(item.get("vote_average", 0), 1))
+                results.append(SearchResult(
+                    tmdb_id=item["id"],
+                    title=title,
+                    year=year_val,
+                    poster=poster,
+                    media_type=t,
+                    tmdb_rating=rating
+                ))
+
+        results.sort(key=lambda x: float(x.tmdb_rating or 0), reverse=True)
+        return results[:20]
+
 async def search_titles(query: str) -> list[SearchResult]:
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TMDB_BASE}/search/multi",
-            params={
-                "api_key": TMDB_API_KEY,
-                "query": query,
-                "language": "pt-BR"
-            }
+            params={"api_key": TMDB_API_KEY, "query": query, "language": "pt-BR"}
         )
         data = response.json()
         results = []
@@ -31,18 +81,19 @@ async def search_titles(query: str) -> list[SearchResult]:
             date = item.get("release_date") or item.get("first_air_date", "")
             year = date[:4] if date else None
             poster = f"{POSTER_BASE}{item['poster_path']}" if item.get("poster_path") else None
+            rating = str(round(item.get("vote_average", 0), 1))
             results.append(SearchResult(
                 tmdb_id=item["id"],
                 title=title,
                 year=year,
                 poster=poster,
-                media_type=item["media_type"]
+                media_type=item["media_type"],
+                tmdb_rating=rating
             ))
         return results
 
 async def get_title_details(tmdb_id: int, media_type: str) -> MovieResponse:
     async with httpx.AsyncClient() as client:
-        # Busca detalhes no TMDB
         tmdb_resp = await client.get(
             f"{TMDB_BASE}/{media_type}/{tmdb_id}",
             params={
@@ -61,38 +112,27 @@ async def get_title_details(tmdb_id: int, media_type: str) -> MovieResponse:
         genres = ", ".join([g["name"] for g in tmdb.get("genres", [])])
         tmdb_rating = str(round(tmdb.get("vote_average", 0), 1))
 
-        # Elenco e diretor
         credits = tmdb.get("credits", {})
         cast_list = [m["name"] for m in credits.get("cast", [])[:5]]
         cast = ", ".join(cast_list)
         director = next(
-            (m["name"] for m in credits.get("crew", []) if m["job"] == "Director"),
-            None
+            (m["name"] for m in credits.get("crew", []) if m["job"] == "Director"), None
         )
 
-        # Runtime
         runtime = tmdb.get("runtime")
         runtime_str = f"{runtime} min" if runtime else None
 
-        # Streaming (Brasil)
         providers_data = tmdb.get("watch/providers", {}).get("results", {}).get("BR", {})
         streaming = []
         for p in providers_data.get("flatrate", []):
             logo = f"{LOGO_BASE}{p['logo_path']}" if p.get("logo_path") else None
-            streaming.append(StreamingProvider(
-                provider_name=p["provider_name"],
-                logo_path=logo
-            ))
+            streaming.append(StreamingProvider(provider_name=p["provider_name"], logo_path=logo))
 
-        # Busca notas no OMDb pelo IMDB ID
         imdb_id = tmdb.get("external_ids", {}).get("imdb_id") or tmdb.get("imdb_id")
         imdb_rating = rotten_tomatoes = metacritic = None
 
         if imdb_id:
-            omdb_resp = await client.get(
-                OMDB_BASE,
-                params={"apikey": OMDB_API_KEY, "i": imdb_id}
-            )
+            omdb_resp = await client.get(OMDB_BASE, params={"apikey": OMDB_API_KEY, "i": imdb_id})
             omdb = omdb_resp.json()
             imdb_rating = omdb.get("imdbRating")
             for rating in omdb.get("Ratings", []):
@@ -101,7 +141,6 @@ async def get_title_details(tmdb_id: int, media_type: str) -> MovieResponse:
                 if rating["Source"] == "Metacritic":
                     metacritic = rating["Value"]
 
-        # Calcula média
         scores = []
         if imdb_rating and imdb_rating != "N/A":
             scores.append(float(imdb_rating) * 10)
@@ -114,19 +153,10 @@ async def get_title_details(tmdb_id: int, media_type: str) -> MovieResponse:
         average = round(sum(scores) / len(scores), 1) if scores else None
 
         return MovieResponse(
-            title=title,
-            year=year,
-            synopsis=synopsis,
-            director=director,
-            cast=cast,
-            genres=genres,
-            poster=poster,
-            runtime=runtime_str,
-            imdb_rating=imdb_rating,
-            rotten_tomatoes=rotten_tomatoes,
-            metacritic=metacritic,
-            tmdb_rating=tmdb_rating,
-            average_rating=average,
-            streaming=streaming
+            title=title, year=year, synopsis=synopsis, director=director,
+            cast=cast, genres=genres, poster=poster, runtime=runtime_str,
+            imdb_rating=imdb_rating, rotten_tomatoes=rotten_tomatoes,
+            metacritic=metacritic, tmdb_rating=tmdb_rating,
+            average_rating=average, streaming=streaming
         )
     

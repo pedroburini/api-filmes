@@ -14,15 +14,11 @@ class MovieResponse(BaseModel):
     genres: Optional[str] = None
     poster: Optional[str] = None
     runtime: Optional[str] = None
-    
-    # Notas
     imdb_rating: Optional[str] = None
     rotten_tomatoes: Optional[str] = None
     metacritic: Optional[str] = None
     tmdb_rating: Optional[str] = None
     average_rating: Optional[float] = None
-    
-    # Streaming
     streaming: Optional[list[StreamingProvider]] = None
 
 class SearchResult(BaseModel):
@@ -31,4 +27,5 @@ class SearchResult(BaseModel):
     year: Optional[str] = None
     poster: Optional[str] = None
     media_type: str
+    tmdb_rating: Optional[str] = None
     
