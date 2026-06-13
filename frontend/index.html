@@ -529,10 +529,11 @@
   let activeFilters = {};
 
   // Init
+  isLoading = true;
   loadGenres();
   updateRangeFill();
-  applyFilters();
   setupInfiniteScroll();
+  applyFilters();
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') search();
