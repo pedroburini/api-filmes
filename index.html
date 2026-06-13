@@ -680,9 +680,10 @@
   // ── INFINITE SCROLL ───────────────────────────────────
   function setupInfiniteScroll() {
     window.addEventListener('scroll', () => {
+      if (isLoading || !hasMore) return;
       const scrolledTo = window.scrollY + window.innerHeight;
       const totalHeight = document.documentElement.scrollHeight;
-      if (scrolledTo >= totalHeight - 300 && !isLoading && hasMore) {
+      if (scrolledTo >= totalHeight - 400) {
         loadPopular();
       }
     });
