@@ -22,10 +22,14 @@
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      background: #0f0f0f;
+      z-index: 10;
     }
 
     .logo { font-size: 1rem; font-weight: 600; color: #f0f0f0; letter-spacing: 0.04em; }
-    .logo span { color: #666; font-weight: 400; font-size: 0.8rem; margin-left: 8px; }
+    .logo span { color: #555; font-weight: 400; font-size: 0.8rem; margin-left: 8px; }
 
     .search-bar {
       display: flex;
@@ -65,7 +69,7 @@
     .filters {
       display: flex;
       gap: 8px;
-      padding: 1.25rem 2rem;
+      padding: 1rem 2rem;
       flex-wrap: wrap;
       border-bottom: 1px solid #1a1a1a;
       align-items: center;
@@ -86,35 +90,23 @@
     .filters select:focus, .filters input[type=number]:focus { border-color: #444; }
     .filters input[type=number] { width: 90px; }
 
-    .filter-label {
-      font-size: 0.75rem;
+    .filter-label { font-size: 0.75rem; color: #444; margin-right: 2px; }
+
+    .filter-group { display: flex; align-items: center; gap: 6px; }
+
+    .btn-clear {
+      background: none;
+      border: none;
       color: #444;
-      margin-right: 2px;
-    }
-
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-filter {
-      padding: 0.5rem 1rem;
-      background: #1e1e1e;
-      border: 1px solid #2a2a2a;
-      border-radius: 6px;
-      color: #aaa;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       cursor: pointer;
-      transition: background 0.2s;
       margin-left: auto;
+      transition: color 0.15s;
     }
 
-    .btn-filter:hover { background: #252525; color: #f0f0f0; }
+    .btn-clear:hover { color: #888; }
 
-    .grid-container {
-      padding: 1.5rem 2rem;
-    }
+    .grid-container { padding: 1.5rem 2rem; }
 
     .grid-title {
       font-size: 0.75rem;
@@ -163,21 +155,8 @@
       padding: 0.75rem;
     }
 
-    .poster-title {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #f0f0f0;
-      line-height: 1.3;
-      margin-bottom: 4px;
-    }
-
-    .poster-meta {
-      font-size: 0.7rem;
-      color: #888;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .poster-title { font-size: 0.78rem; font-weight: 500; color: #f0f0f0; line-height: 1.3; margin-bottom: 4px; }
+    .poster-meta { font-size: 0.7rem; color: #888; display: flex; justify-content: space-between; align-items: center; }
 
     .poster-badge {
       position: absolute;
@@ -205,31 +184,14 @@
       backdrop-filter: blur(4px);
     }
 
-    .load-more {
-      display: block;
-      margin: 2rem auto;
-      padding: 0.75rem 2rem;
-      background: #151515;
-      border: 1px solid #222;
-      border-radius: 8px;
-      color: #888;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
+    .scroll-sentinel { height: 60px; display: flex; align-items: center; justify-content: center; }
+    .scroll-sentinel .dot { width: 6px; height: 6px; border-radius: 50%; background: #222; animation: pulse 1.2s infinite; }
+    .scroll-sentinel .dot:nth-child(2) { animation-delay: 0.2s; }
+    .scroll-sentinel .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,100%{opacity:0.2} 50%{opacity:0.8} }
 
-    .load-more:hover { background: #1e1e1e; color: #f0f0f0; }
-
-    .loading {
-      text-align: center;
-      padding: 3rem;
-      color: #333;
-      font-size: 0.85rem;
-    }
-
-    /* SEARCH RESULTS */
     .results-list {
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 6px;
       max-width: 560px;
@@ -262,7 +224,6 @@
     .result-info strong { display: block; font-size: 0.9rem; color: #e0e0e0; font-weight: 500; }
     .result-info span { font-size: 0.75rem; color: #555; }
 
-    /* DETAILS */
     .details-container {
       max-width: 760px;
       margin: 0 auto 4rem;
@@ -290,11 +251,7 @@
       overflow: hidden;
     }
 
-    .details-top {
-      display: flex;
-      gap: 1.75rem;
-      padding: 1.75rem;
-    }
+    .details-top { display: flex; gap: 1.75rem; padding: 1.75rem; }
 
     .details-top img {
       width: 150px;
@@ -303,14 +260,7 @@
       object-fit: cover;
     }
 
-    .details-info h2 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: #f0f0f0;
-      margin-bottom: 0.3rem;
-      line-height: 1.3;
-    }
-
+    .details-info h2 { font-size: 1.35rem; font-weight: 600; color: #f0f0f0; margin-bottom: 0.3rem; line-height: 1.3; }
     .meta { font-size: 0.78rem; color: #555; margin-bottom: 0.9rem; }
     .synopsis { font-size: 0.85rem; line-height: 1.65; color: #888; margin-bottom: 1rem; }
     .crew { font-size: 0.8rem; color: #555; line-height: 1.8; }
@@ -318,13 +268,7 @@
 
     .section { padding: 1.25rem 1.75rem; border-top: 1px solid #1a1a1a; }
 
-    .section-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #444;
-      margin-bottom: 1rem;
-    }
+    .section-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #444; margin-bottom: 1rem; }
 
     .ratings-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
@@ -381,7 +325,7 @@
 <div class="filters" id="filtersBar">
   <div class="filter-group">
     <span class="filter-label">Tipo</span>
-    <select id="filterType">
+    <select id="filterType" onchange="resetAndLoad()">
       <option value="all">Todos</option>
       <option value="movie">Filmes</option>
       <option value="tv">Séries</option>
@@ -389,31 +333,39 @@
   </div>
   <div class="filter-group">
     <span class="filter-label">Gênero</span>
-    <select id="filterGenre"><option value="">Todos</option></select>
+    <select id="filterGenre" onchange="resetAndLoad()"><option value="">Todos</option></select>
   </div>
   <div class="filter-group">
     <span class="filter-label">Ano</span>
-    <input type="number" id="filterYear" placeholder="2024" min="1900" max="2025" />
+    <input type="number" id="filterYear" placeholder="2024" min="1900" max="2025" onchange="resetAndLoad()" />
   </div>
   <div class="filter-group">
     <span class="filter-label">Nota mín.</span>
-    <input type="number" id="filterRating" placeholder="7.0" min="0" max="10" step="0.5" />
+    <input type="number" id="filterRating" placeholder="7.0" min="0" max="10" step="0.5" onchange="resetAndLoad()" />
   </div>
-  <button class="btn-filter" onclick="applyFilters()">Aplicar</button>
-  <button class="btn-filter" onclick="clearFilters()" style="background:none;border:none;color:#444">Limpar</button>
+  <div class="filter-group">
+    <span class="filter-label">Ordenar</span>
+    <select id="filterSort" onchange="resetAndLoad()">
+      <option value="popularity">Popularidade</option>
+      <option value="rating">Nota</option>
+      <option value="year_desc">Ano ↓</option>
+      <option value="year_asc">Ano ↑</option>
+    </select>
+  </div>
+  <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
 </div>
 
 <div id="homeView">
   <div class="grid-container">
     <div class="grid-title" id="gridTitle">Popular agora</div>
-    <div class="poster-grid" id="posterGrid">
-      <div class="loading">Carregando...</div>
-    </div>
+    <div class="poster-grid" id="posterGrid"></div>
   </div>
-  <button class="load-more" id="loadMoreBtn" onclick="loadMore()" style="display:none">Carregar mais</button>
+  <div class="scroll-sentinel" id="sentinel">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
 </div>
 
-<div class="results-list" id="resultsList" style="display:none"></div>
+<div class="results-list" id="resultsList"></div>
 
 <div class="details-container" id="detailsContainer">
   <button class="back-btn" onclick="goBack()">← voltar</button>
@@ -423,15 +375,28 @@
 <script>
   const API = 'https://api-filmes-production-5797.up.railway.app/api';
   let currentPage = 1;
-  let currentFilters = {};
+  let isLoading = false;
+  let hasMore = true;
   let genres = {};
+  let debounceTimer = null;
 
-  // Init
   loadGenres();
-  loadPopular(1, {}, false);
+  loadPopular(false);
+  setupInfiniteScroll();
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') search();
+  });
+
+  // Debounce para inputs numéricos
+  document.getElementById('filterYear').addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(resetAndLoad, 600);
+  });
+
+  document.getElementById('filterRating').addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(resetAndLoad, 600);
   });
 
   async function loadGenres() {
@@ -448,21 +413,59 @@
     } catch {}
   }
 
-  async function loadPopular(page, filters, append) {
-    if (!append) {
-      document.getElementById('posterGrid').innerHTML = '<div class="loading">Carregando...</div>';
-    }
-    const params = new URLSearchParams({ page, ...filters });
-    Object.keys(filters).forEach(k => { if (!filters[k]) params.delete(k); });
+  function getFilters() {
+    return {
+      media_type: document.getElementById('filterType').value,
+      genre_id: document.getElementById('filterGenre').value,
+      year: document.getElementById('filterYear').value,
+      min_rating: document.getElementById('filterRating').value,
+      sort_by: document.getElementById('filterSort').value,
+    };
+  }
+
+  function resetAndLoad() {
+    currentPage = 1;
+    hasMore = true;
+    document.getElementById('posterGrid').innerHTML = '';
+    const f = getFilters();
+    const isFiltered = f.genre_id || f.year || f.min_rating || f.media_type !== 'all' || f.sort_by !== 'popularity';
+    document.getElementById('gridTitle').textContent = isFiltered ? 'Resultados filtrados' : 'Popular agora';
+    loadPopular(false);
+  }
+
+  async function loadPopular(append) {
+    if (isLoading || !hasMore) return;
+    isLoading = true;
+
+    const filters = getFilters();
+    const params = new URLSearchParams({ page: currentPage });
+    if (filters.media_type && filters.media_type !== 'all') params.set('media_type', filters.media_type);
+    if (filters.genre_id) params.set('genre_id', filters.genre_id);
+    if (filters.year) params.set('year', filters.year);
+    if (filters.min_rating) params.set('min_rating', filters.min_rating);
 
     try {
       const res = await fetch(`${API}/popular?${params}`);
-      const data = await res.json();
+      let data = await res.json();
+
+      // Ordenação no frontend
+      const sort = filters.sort_by;
+      if (sort === 'rating') {
+        data.sort((a, b) => parseFloat(b.tmdb_rating || 0) - parseFloat(a.tmdb_rating || 0));
+      } else if (sort === 'year_desc') {
+        data.sort((a, b) => (b.year || '0').localeCompare(a.year || '0'));
+      } else if (sort === 'year_asc') {
+        data.sort((a, b) => (a.year || '0').localeCompare(b.year || '0'));
+      }
+
       renderGrid(data, append);
-      document.getElementById('loadMoreBtn').style.display = data.length >= 10 ? 'block' : 'none';
+      hasMore = data.length >= 10;
+      currentPage++;
     } catch {
-      document.getElementById('posterGrid').innerHTML = '<div class="loading">Erro ao carregar.</div>';
+      hasMore = false;
     }
+
+    isLoading = false;
   }
 
   function renderGrid(items, append) {
@@ -488,16 +491,12 @@
     });
   }
 
-  function applyFilters() {
-    currentPage = 1;
-    currentFilters = {
-      media_type: document.getElementById('filterType').value,
-      genre_id: document.getElementById('filterGenre').value,
-      year: document.getElementById('filterYear').value,
-      min_rating: document.getElementById('filterRating').value,
-    };
-    document.getElementById('gridTitle').textContent = 'Resultados filtrados';
-    loadPopular(1, currentFilters, false);
+  function setupInfiniteScroll() {
+    const sentinel = document.getElementById('sentinel');
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) loadPopular(true);
+    }, { threshold: 0.1 });
+    observer.observe(sentinel);
   }
 
   function clearFilters() {
@@ -505,20 +504,13 @@
     document.getElementById('filterGenre').value = '';
     document.getElementById('filterYear').value = '';
     document.getElementById('filterRating').value = '';
-    currentFilters = {};
-    currentPage = 1;
-    document.getElementById('gridTitle').textContent = 'Popular agora';
-    loadPopular(1, {}, false);
-  }
-
-  function loadMore() {
-    currentPage++;
-    loadPopular(currentPage, currentFilters, true);
+    document.getElementById('filterSort').value = 'popularity';
+    resetAndLoad();
   }
 
   async function search() {
     const q = document.getElementById('searchInput').value.trim();
-    if (!q) return;
+    if (!q) { goBack(); return; }
 
     document.getElementById('homeView').style.display = 'none';
     document.getElementById('filtersBar').style.display = 'none';
@@ -545,7 +537,7 @@
         <img src="${r.poster || 'https://via.placeholder.com/38x56?text=?'}" alt="${r.title}" />
         <div class="result-info">
           <strong>${r.title}</strong>
-          <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'} ${r.tmdb_rating ? '· ⭐ ' + r.tmdb_rating : ''}</span>
+          <span>${r.year || 'S/D'} · ${r.media_type === 'movie' ? 'Filme' : 'Série'}${r.tmdb_rating ? ' · ⭐ ' + r.tmdb_rating : ''}</span>
         </div>
       `;
       item.onclick = () => loadDetails(r.tmdb_id, r.media_type);
@@ -558,14 +550,15 @@
     document.getElementById('filtersBar').style.display = 'none';
     document.getElementById('resultsList').style.display = 'none';
     document.getElementById('detailsContainer').style.display = 'block';
-    document.getElementById('detailsCard').innerHTML = '<div class="loading" style="display:block">Carregando...</div>';
+    document.getElementById('detailsCard').innerHTML = '<div style="padding:2rem;text-align:center;color:#444;font-size:0.85rem">Carregando...</div>';
+    window.scrollTo({ top: 0 });
 
     try {
       const res = await fetch(`${API}/details/${type}/${id}`);
       const d = await res.json();
       renderDetails(d);
     } catch {
-      document.getElementById('detailsCard').innerHTML = '<div class="loading" style="display:block">Erro ao carregar.</div>';
+      document.getElementById('detailsCard').innerHTML = '<div style="padding:2rem;text-align:center;color:#444">Erro ao carregar.</div>';
     }
   }
 
