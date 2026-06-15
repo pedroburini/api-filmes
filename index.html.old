@@ -434,116 +434,6 @@
     .streaming-logos img:hover { opacity: 1; }
     .no-streaming { font-size: 0.8rem; color: #444; }
 
-    /* TABS */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      padding: 0.75rem 2rem 0;
-      border-bottom: 1px solid #1a1a1a;
-    }
-
-    .tab-btn {
-      padding: 0.5rem 1.1rem;
-      background: none;
-      border: 1px solid transparent;
-      border-bottom: none;
-      border-radius: 6px 6px 0 0;
-      color: #555;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: color 0.15s, background 0.15s;
-      position: relative;
-      bottom: -1px;
-    }
-
-    .tab-btn:hover { color: #aaa; }
-
-    .tab-btn.active {
-      color: #d0d0d0;
-      background: #0f0f0f;
-      border-color: #1a1a1a;
-      border-bottom-color: #0f0f0f;
-    }
-
-    /* AI VIEW */
-    .ai-view { padding: 2rem; max-width: 680px; margin: 0 auto; }
-
-    .ai-header {
-      margin-bottom: 1.75rem;
-    }
-
-    .ai-header h2 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #d0d0d0;
-      margin-bottom: 0.35rem;
-    }
-
-    .ai-header p {
-      font-size: 0.8rem;
-      color: #444;
-      line-height: 1.5;
-    }
-
-    .ai-input-wrap {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .ai-input-wrap textarea {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      background: #151515;
-      border: 1px solid #222;
-      border-radius: 8px;
-      color: #e0e0e0;
-      font-size: 0.875rem;
-      font-family: 'Segoe UI', sans-serif;
-      resize: none;
-      outline: none;
-      line-height: 1.5;
-      transition: border 0.2s;
-      height: 80px;
-    }
-
-    .ai-input-wrap textarea::placeholder { color: #333; }
-    .ai-input-wrap textarea:focus { border-color: #444; }
-
-    .ai-submit {
-      align-self: flex-end;
-      padding: 0.65rem 1.25rem;
-      background: #1e1e1e;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      color: #ccc;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
-    }
-
-    .ai-submit:hover { background: #272727; color: #f0f0f0; }
-    .ai-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-
-    .ai-status {
-      font-size: 0.78rem;
-      color: #444;
-      min-height: 1.2rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .ai-status.loading { color: #555; }
-    .ai-status.error { color: #744; }
-
-    .ai-grid-title {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #333;
-      margin-bottom: 1rem;
-    }
-
     @media (max-width: 600px) {
       header { flex-direction: column; align-items: flex-start; }
       .search-bar { max-width: 100%; width: 100%; }
@@ -551,10 +441,6 @@
       .details-top { flex-direction: column; align-items: center; text-align: center; }
       .details-top img { width: 120px; }
       .filters { padding: 1rem; }
-      .tabs { padding: 0.75rem 1rem 0; }
-      .ai-view { padding: 1.25rem 1rem; }
-      .ai-input-wrap { flex-direction: column; }
-      .ai-submit { align-self: flex-end; }
     }
   </style>
 </head>
@@ -567,11 +453,6 @@
     <button onclick="search()">Buscar</button>
   </div>
 </header>
-
-<div class="tabs">
-  <button class="tab-btn active" id="tabExplorar" onclick="switchTab('explorar')">Explorar</button>
-  <button class="tab-btn" id="tabAI" onclick="switchTab('ai')">Busca com IA</button>
-</div>
 
 <div class="filters" id="filtersBar">
   <div class="filter-group">
@@ -633,22 +514,6 @@
 
 <div class="results-list" id="resultsList"></div>
 
-<div id="aiView" style="display:none;">
-  <div class="ai-view">
-    <div class="ai-header">
-      <h2>Busca com IA</h2>
-      <p>Descreva em linguagem natural o que você quer assistir. A IA interpreta e sugere títulos relevantes.</p>
-    </div>
-    <div class="ai-input-wrap">
-      <textarea id="aiInput" placeholder="Ex: um thriller psicológico dos anos 90 com final inesperado..."></textarea>
-      <button class="ai-submit" id="aiSubmitBtn" onclick="aiSearch()">Buscar</button>
-    </div>
-    <div class="ai-status" id="aiStatus"></div>
-    <div class="ai-grid-title" id="aiGridTitle" style="display:none;">Sugestões</div>
-    <div class="poster-grid" id="aiGrid"></div>
-  </div>
-</div>
-
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal-box" id="modalBox">
     <button class="modal-close" onclick="closeModalDirect()">✕</button>
@@ -671,94 +536,6 @@
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') search();
-  });
-
-  // ── TABS ──────────────────────────────────────────────
-  function switchTab(tab) {
-    const isAI = tab === 'ai';
-    document.getElementById('tabExplorar').classList.toggle('active', !isAI);
-    document.getElementById('tabAI').classList.toggle('active', isAI);
-    document.getElementById('filtersBar').style.display = isAI ? 'none' : 'flex';
-    document.getElementById('homeView').style.display = isAI ? 'none' : 'block';
-    document.getElementById('resultsList').style.display = 'none';
-    document.getElementById('aiView').style.display = isAI ? 'block' : 'none';
-    document.getElementById('searchInput').value = '';
-    if (!isAI) {
-      const sentinel = document.getElementById('sentinel');
-      if (sentinel) sentinel.classList.remove('hidden');
-    }
-  }
-
-  // ── AI SEARCH ─────────────────────────────────────────
-  async function aiSearch() {
-    const query = document.getElementById('aiInput').value.trim();
-    if (!query) return;
-
-    const btn = document.getElementById('aiSubmitBtn');
-    const status = document.getElementById('aiStatus');
-    const grid = document.getElementById('aiGrid');
-    const gridTitle = document.getElementById('aiGridTitle');
-
-    btn.disabled = true;
-    status.className = 'ai-status loading';
-    status.textContent = 'Interpretando sua descrição...';
-    grid.innerHTML = '';
-    gridTitle.style.display = 'none';
-
-    try {
-      const res = await fetch(`${API}/ai/recommend`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
-      });
-
-      if (!res.ok) throw new Error('Erro na API');
-      const data = await res.json();
-
-      if (!data.length) {
-        status.className = 'ai-status';
-        status.textContent = 'Nenhum resultado encontrado. Tente uma descrição diferente.';
-      } else {
-        status.className = 'ai-status';
-        status.textContent = `${data.length} títulos encontrados para "${query}"`;
-        gridTitle.style.display = 'block';
-        data.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'poster-card';
-          card.innerHTML = `
-            <img src="${item.poster || 'https://via.placeholder.com/150x225?text=?'}" alt="${item.title}" loading="lazy" />
-            <div class="type-badge">${item.media_type === 'movie' ? 'Filme' : 'Série'}</div>
-            ${item.tmdb_rating && item.tmdb_rating !== '0.0' ? `<div class="poster-badge">⭐ ${item.tmdb_rating}</div>` : ''}
-            <div class="poster-overlay">
-              <div class="poster-title">${item.title}</div>
-              <div class="poster-meta">
-                <span>${item.year || ''}</span>
-                <span>${item.tmdb_rating && item.tmdb_rating !== '0.0' ? item.tmdb_rating : ''}</span>
-              </div>
-            </div>
-          `;
-          card.onclick = () => loadDetails(item.tmdb_id, item.media_type);
-          grid.appendChild(card);
-        });
-      }
-    } catch {
-      status.className = 'ai-status error';
-      status.textContent = 'Erro ao buscar. Tente novamente.';
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const aiInput = document.getElementById('aiInput');
-    if (aiInput) {
-      aiInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          aiSearch();
-        }
-      });
-    }
   });
 
   // ── RANGE SLIDER ──────────────────────────────────────

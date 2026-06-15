@@ -29,3 +29,6 @@ class SearchResult(BaseModel):
     media_type: str
     tmdb_rating: Optional[str] = None
     
+class AIRecommendRequest(BaseModel):
+    query: str
+    
