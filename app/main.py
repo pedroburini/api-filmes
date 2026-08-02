@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import Response
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import router
 
@@ -20,3 +21,7 @@ app.include_router(router, prefix="/api")
 @app.get("/")
 async def root():
     return {"message": "API de Filmes e Séries — acesse /docs para a documentação"}
+
+@app.head("/")
+async def head_root():
+    return Response(status_code=200)
